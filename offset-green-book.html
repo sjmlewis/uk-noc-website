@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offset and the Green Book | UK-NOC</title>
+<meta name="description" content="How HM Treasury's Green Book principles are expected to shape the value of UK Offset projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Newsreader:opsz,wght@6..72,600&display=swap">
+<style>
+/* VOICE formal but relaxed: an independent forum's own site, calm and exact, nothing to sell
+   IDEA the table plan, meeting notice and reading pack for a round-table meeting in a London office
+   PICTURE a round table seen from above, places set for government, UK companies and overseas suppliers
+   COLOUR white paper and ink; a deep sea-teal field top and bottom; seat colours sky blue, coral and saffron
+   TYPE Newsreader 600 for headings, Inter for text
+   LAYOUT laptop: teal band with the table left, title and buttons right, ruled sections below. Phone: title, table, buttons */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0e1315);--ink:light-dark(#151a1d,#e6ecee);--muted:light-dark(#4b575d,#a7b4b9);--rule:light-dark(#d5dde0,#2a3439);--panel:light-dark(#f2f5f6,#141b1e);--field:light-dark(#0b4a55,#0a3840);--line:light-dark(#7d8b91,#5d6c72);--err:light-dark(#b3261e,#ff8a80);--focus:light-dark(#0b4a55,#7fd0dc);--link:light-dark(#0b4a55,#8fd6e1);--gov:#8ab4ff;--uk:#ff8f6b;--ovs:#ffcf5c}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:12px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Newsreader,Georgia,"Times New Roman",serif;font-weight:600;line-height:1.1;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(36px,5vw,54px);line-height:1.05;letter-spacing:-.02em;text-wrap:balance;margin-bottom:16px}
+h2{font-size:clamp(26px,3vw,34px);text-wrap:balance;margin-bottom:14px}
+h3{font-size:21px;margin-bottom:8px}
+p{margin:0 0 1em}
+a{color:inherit;text-underline-offset:3px}
+main a:not(.btn){color:var(--link)}
+dt{font-weight:600}
+dd{margin:0}
+.wrap{max-width:1180px;margin:0 auto}
+.band{padding-block:clamp(36px,5vw,72px);padding-inline:max(5vw,16px)}
+.draft{background:light-dark(#fff1c2,#3b300c);color:light-dark(#3d2f00,#ffe7a3);font-size:14px;padding:8px max(5vw,16px)}
+.top,.hero,.pagehead,footer{background:var(--field);color:#f1f7f8}
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 28px;padding:12px max(5vw,16px)}
+.mark{display:inline-flex;align-items:center;gap:10px;font:600 22px/1 Newsreader,Georgia,serif;text-decoration:none;padding:8px 0}
+.mark svg{width:30px;height:30px;flex:none}
+nav{display:flex;flex-wrap:wrap;gap:0 22px;font-size:15px}
+nav a{display:inline-block;padding:11px 0;text-decoration:none}
+nav a:hover,nav a[aria-current=page]{text-decoration:underline}
+.hero{padding-top:clamp(12px,3vw,32px)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);grid-template-areas:"fig txt" "fig act";column-gap:clamp(24px,5vw,72px);align-items:center}
+.txt{grid-area:txt;align-self:end}
+.act{grid-area:act;align-self:start}
+.fig{grid-area:fig}
+.lede,.pagehead p{font-size:18px;color:#d6e7ea;max-width:44em}
+.when{font-weight:600;margin:4px 0 22px}
+.pagehead h1{max-width:18em}
+.pagehead .btns{margin-top:22px}
+.crumbs{font-size:15px;margin:0 0 12px}
+.pagehead .crumbs a{color:#fff}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:6px;border:2px solid transparent;font:600 16px/1.2 Inter,system-ui,sans-serif;text-decoration:none;cursor:pointer}
+.btn.p{background:var(--ovs);color:#1d1600}
+.btn.s{border-color:rgba(255,255,255,.7);color:#fff}
+.btn.d{background:var(--field);color:#fff}
+.btn:hover{filter:brightness(1.07)}
+.top a:focus-visible,.hero a:focus-visible,.pagehead a:focus-visible,.chip:focus-visible,footer a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.plan{max-width:440px;margin:0 auto}
+.plan svg{display:block;width:100%;height:auto}
+.seat{transition:opacity .25s}
+svg[data-hl] .seat{opacity:.2}
+svg[data-hl=gov] .gov,svg[data-hl=uk] .uk,svg[data-hl=ovs] .ovs{opacity:1}
+.legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:22px;border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;font:15px/1.2 Inter,system-ui,sans-serif;cursor:pointer}
+.chip[aria-pressed=true]{background:rgba(255,255,255,.14);border-color:#fff}
+.dot{display:inline-block;width:13px;height:13px;border-radius:50%;background:var(--c);box-shadow:0 0 0 1.5px rgba(0,0,0,.28);flex:none}
+.split{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(20px,4vw,64px)}
+.split p{max-width:40em}
+.sec+.sec{border-top:1px solid var(--rule)}
+.intro{color:var(--muted);margin-bottom:22px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px clamp(20px,3vw,44px);border-top:2px solid var(--ink);padding-top:20px}
+.three h3{display:flex;align-items:flex-start;gap:10px}
+.three h3 .dot{margin-top:6px}
+.three p{margin:0;color:var(--muted)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px clamp(20px,3vw,44px);border-top:2px solid var(--ink);padding-top:20px}
+.two p{margin:0}
+.ruled{margin:0;border-top:2px solid var(--ink)}
+.ruled div{display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr);gap:4px 24px;padding:16px 0;border-bottom:1px solid var(--rule)}
+.ruled dt{font:600 20px/1.25 Newsreader,Georgia,serif}
+.ruled.short div{grid-template-columns:minmax(0,150px) minmax(0,1fr)}
+.ruled.small{font-size:15px}
+.ruled.small dt{font:600 15px/1.5 Inter,system-ui,sans-serif}
+.gb{display:block;font-weight:600;font-size:14px;color:var(--muted)}
+.notice{border:1px solid var(--rule);border-radius:10px;overflow:hidden;background:var(--bg)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;background:var(--panel)}
+.facts div{padding:18px 20px;border-left:1px solid var(--rule)}
+.facts div:first-child{border-left:0}
+.facts dt{font-size:14px;color:var(--muted);margin-bottom:4px}
+.rows{margin:0}
+.rows div{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:4px 24px;padding:16px 20px;border-top:1px solid var(--rule)}
+.list{margin:0;padding-left:1.2em;max-width:44em}
+.list li{margin:0 0 10px}
+.callout{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:18px 20px;font-size:15px;margin-top:28px;max-width:52em}
+.callout p:last-child{margin:0}
+.group+.group{margin-top:clamp(32px,4vw,52px)}
+.papers{border-top:2px solid var(--ink)}
+.paper{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 28px;padding:16px 0;border-bottom:1px solid var(--rule)}
+.paper h3{font-size:20px;margin:0 0 4px}
+.paper p{margin:0;color:var(--muted)}
+.paper .by{font-size:14px;color:var(--muted);white-space:nowrap;padding-top:4px}
+.paper .also{margin-top:6px;font-size:15px;color:var(--ink)}
+.reg,.band.tint{background:var(--panel)}
+.reg .split{align-items:start}
+form{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
+label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
+.opt{font-weight:400;color:var(--muted)}
+input[type=text],input[type=email],select{width:100%;min-height:48px;padding:10px 12px;font:16px/1.3 Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px}
+input:focus-visible,select:focus-visible,form .btn:focus-visible,main a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+[aria-invalid=true]{border-color:var(--err)}
+.err{color:var(--err);font-size:14px;margin-top:4px}
+.err:empty{display:none}
+.check{display:flex;gap:12px;align-items:flex-start;font-weight:400;margin:0}
+.check input{width:22px;height:22px;margin:2px 0 0;flex:none;accent-color:#0b4a55}
+.note{font-size:14px;color:var(--muted);margin:0}
+form .btn{background:var(--field);color:#fff;justify-self:start}
+.status{border:1px solid var(--rule);border-radius:8px;padding:12px 14px;background:var(--panel);font-size:15px;margin:0}
+.status[hidden]{display:none}
+.small{font-size:15px}
+footer .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:16px 48px}
+footer p{margin:0 0 6px;color:#d6e7ea}
+footer .name{font:600 22px/1.2 Newsreader,Georgia,serif;color:#fff;margin-bottom:8px}
+footer a{color:#fff;overflow-wrap:anywhere}
+@media(max-width:900px){.three{grid-template-columns:minmax(0,1fr)}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}.facts div:nth-child(3){border-left:0}.facts div:nth-child(n+3){border-top:1px solid var(--rule)}}
+@media(max-width:640px){.split,.two,footer .wrap{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.hero .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"txt" "fig" "act";row-gap:18px}.plan{max-width:340px}.lede,.pagehead p{font-size:17px}.facts{grid-template-columns:minmax(0,1fr)}.facts div{border-left:0}.facts div+div{border-top:1px solid var(--rule)}.rows div,.ruled div,.ruled.short div,.paper{grid-template-columns:minmax(0,1fr)}.paper .by{white-space:normal;padding-top:0}}
+@media(prefers-reduced-motion:reduce){.seat{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body id="top">
+<header class="top">
+<a class="mark" href="index.html" aria-label="UK-NOC home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="2.8" r="2.6" fill="var(--gov)"/><circle cx="25.6" cy="21.1" r="2.6" fill="var(--uk)"/><circle cx="4.4" cy="21.1" r="2.6" fill="var(--ovs)"/></svg>UK-NOC</a>
+<nav aria-label="Sections"><a href="index.html#about">About</a><a href="index.html#who">Who it is for</a><a href="index.html#how">How it works</a><a href="papers.html">Policy papers</a><a href="index.html#register">Register</a></nav>
+</header>
+<main>
+<section class="pagehead band" aria-labelledby="t">
+<div class="wrap">
+<p class="crumbs"><a href="index.html">Home</a> / <a href="papers.html">Policy papers</a></p>
+<h1 id="t">Offset and the Green Book</h1>
+<p>The UK Offset Policy says the Offset Authority will value Offset with a framework consistent with the principles of HM Treasury's Green Book. Its detailed guidance is still to come. Until then, this page explains what the Green Book is and puts its principles into the terms Offset managers already use.</p>
+<div class="btns"><a class="btn p" href="https://www.gov.uk/government/publications/the-green-book-appraisal-and-evaluation-in-central-government/the-green-book-2026">Read the Green Book on GOV.UK</a><a class="btn s" href="uk-offset-policy.html">The UK Offset Policy in brief</a></div>
+</div>
+</section>
+
+<section class="band sec" aria-labelledby="h-gb">
+<div class="wrap split">
+<h2 id="h-gb">What the Green Book is</h2>
+<div>
+<p>The Green Book is HM Treasury's guidance on appraisal: how government assesses the costs, benefits and risks of different ways of meeting its objectives. It is mandatory for central government departments and their arm's-length bodies. HM Treasury published the 2026 edition in February 2026.</p>
+<p>It asks one question of every proposal: how much better off is the UK as a whole, compared with what would have happened anyway?</p>
+</div>
+</div>
+</section>
+
+<section class="band sec" aria-labelledby="h-why">
+<div class="wrap split">
+<h2 id="h-why">Why it matters for Offset</h2>
+<div>
+<p>Section 3.11.1 of the policy says the Offset Authority will use a transparent value framework consistent with the Green Book's principles. The policy defines UK value added as value genuinely generated in the UK that can be evidenced.</p>
+<p>So the face value of a contract, an investment or a licence is the starting point, not the credit. Multipliers then add extra credit for priority places, activities and sectors. Their values are still to be published.</p>
+</div>
+</div>
+</section>
+
+<section class="band sec" aria-labelledby="h-terms">
+<div class="wrap split">
+<div><h2 id="h-terms">The Green Book in Offset terms</h2><p class="intro">Each line pairs a familiar Offset term with the Green Book idea behind it.</p></div>
+<dl class="ruled">
+<div><dt>Additionality</dt><dd><span class="gb">Green Book: additionality</span>Credit only for value that would not exist without the Offset obligation.</dd></div><div><dt>Incrementality</dt><dd><span class="gb">Green Book: deadweight</span>Business that would have happened anyway, such as existing contracts and routine re-orders, earns nothing.</dd></div><div><dt>Baseline</dt><dd><span class="gb">Green Book: business as usual</span>The starting position that new business is measured against.</dd></div><div><dt>Causality</dt><dd><span class="gb">Green Book: outcomes that happen as a result of the intervention</span>The supplier must show that its obligation caused the work.</dd></div><div><dt>UK content</dt><dd><span class="gb">Green Book: leakage</span>Only value made in the UK counts; imported content is deducted.</dd></div><div><dt>No re-badging</dt><dd><span class="gb">Green Book: displacement and substitution</span>Moving work between UK firms, or relabelling existing work, adds nothing.</dd></div><div><dt>Sustainability</dt><dd><span class="gb">Green Book: durability and discounting</span>Capability that lasts for years counts for more than one-off work.</dd></div><div><dt>Credit on delivery</dt><dd><span class="gb">Green Book: optimism bias</span>Credit is for what is delivered and checked, not what is promised.</dd></div><div><dt>Activity, not payments</dt><dd><span class="gb">Green Book: transfers</span>A payment on its own is not value; credit follows the UK activity it pays for.</dd></div><div><dt>Capability building</dt><dd><span class="gb">Green Book: supply-side benefits</span>Credit follows lasting gains in skills, technology and productivity, not turnover.</dd></div><div><dt>Regional and SME multipliers</dt><dd><span class="gb">Green Book: place-based and distributional analysis</span>Benefits in less productive regions and in smaller firms carry extra weight.</dd></div><div><dt>Strategic fit</dt><dd><span class="gb">Green Book: the strategic case</span>Projects should serve the published priority areas.</dd></div><div><dt>Verification</dt><dd><span class="gb">Green Book: monitoring and evaluation</span>Evidence of delivery is checked before credit is granted.</dd></div>
+</dl>
+</div>
+</section>
+
+<section class="band sec" aria-labelledby="h-practice">
+<div class="wrap split">
+<h2 id="h-practice">What this means in practice</h2>
+<div>
+<ul class="list">
+<li>Real UK makers with high UK content count for more than distributors and importers.</li>
+<li>New capability, such as technology transfer, research and skills, counts for more than more of the same.</li>
+<li>New work for established UK companies on what they already make still counts as UK value, even where it attracts no multiplier.</li>
+<li>Plan the evidence from day one: the starting position, the UK content, new jobs and who fills them, approvals and exports.</li>
+</ul>
+<div class="callout"><p><strong>A plain-English reading, not the Offset Authority's guidance.</strong> The Offset Authority will publish its own valuation guidance. The <a href="https://www.gov.uk/government/publications/uk-offset-policy/uk-offset-policy">policy</a> and the <a href="https://www.gov.uk/government/publications/the-green-book-appraisal-and-evaluation-in-central-government/the-green-book-2026">Green Book</a> on GOV.UK are the authority.</p><p class="small">Contains public sector information licensed under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence v3.0</a>.</p></div>
+</div>
+</div>
+</section>
+</main>
+<footer class="band">
+<div class="wrap">
+<div><p class="name">UK National Offset Council</p><p>An informal, independent forum. It is not a government body and does not speak for the Ministry of Defence.</p></div>
+<div><p>Organised by Capital Offset Services Limited, registered in England and Wales, company number 08803140.</p><p>Contact: <a href="mailto:stephen.lewis@nationaloffsetcouncil.uk">stephen.lewis@nationaloffsetcouncil.uk</a></p></div>
+</div>
+</footer>
+</body>
+</html>
