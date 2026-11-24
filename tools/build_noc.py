@@ -12,6 +12,7 @@ if OUT.name == "tools":
     OUT = OUT.parent  # in the repository, the pages sit in the folder above tools/
 DRAFT = False  # True shows the "Draft for review" strip
 CONTACT = "stephen.lewis@nationaloffsetcouncil.uk"
+REG_FORM = "https://forms.cloud.microsoft/e/Jwnrp5mxYh"  # Microsoft Forms: UK National Offset Council: register your interest
 OGL = "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
 GOV = {
     "policy": "https://www.gov.uk/government/publications/uk-offset-policy/uk-offset-policy",
@@ -121,7 +122,9 @@ svg[data-hl=gov] .gov,svg[data-hl=uk] .uk,svg[data-hl=ovs] .ovs{opacity:1}
 .paper .also{margin-top:6px;font-size:15px;color:var(--ink)}
 .reg,.band.tint{background:var(--panel)}
 .reg .split{align-items:start}
-form{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
+form,.regcard{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
+.regcard p,.regcard ul{margin:0}
+.regcard ul{padding-left:22px;display:grid;gap:4px}
 label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
 .opt{font-weight:400;color:var(--muted)}
 input[type=text],input[type=email],select{width:100%;min-height:48px;padding:10px 12px;font:16px/1.3 Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px}
@@ -132,7 +135,7 @@ input:focus-visible,select:focus-visible,form .btn:focus-visible,main a:focus-vi
 .check{display:flex;gap:12px;align-items:flex-start;font-weight:400;margin:0}
 .check input{width:22px;height:22px;margin:2px 0 0;flex:none;accent-color:#0b4a55}
 .note{font-size:14px;color:var(--muted);margin:0}
-form .btn{background:var(--field);color:#fff;justify-self:start}
+form .btn,.regcard .btn{background:var(--field);color:#fff;justify-self:start}
 .status{border:1px solid var(--rule);border-radius:8px;padding:12px 14px;background:var(--panel);font-size:15px;margin:0}
 .status[hidden]{display:none}
 .small{font-size:15px}
@@ -248,7 +251,7 @@ HOME = f"""
 <button type="button" class="chip" data-g="ovs" aria-pressed="false"><span class="dot" style="--c:var(--ovs)"></span>Overseas suppliers</button>
 </div>
 </div>
-<div class="act btns"><a class="btn p" href="#register">Register your interest</a><a class="btn s" href="#register" data-venue>Offer a venue</a></div>
+<div class="act btns"><a class="btn p" href="#register">Register your interest</a><a class="btn s" href="#register">Offer a venue</a></div>
 </div>
 </section>
 
@@ -322,19 +325,15 @@ HOME = f"""
 <div>
 <h2 id="h-reg">Register your interest</h2>
 <p>Please provide your details. Following due diligence, we will let you know when you have been added to the mailing list.</p>
-<p><strong>Offering a venue?</strong> If your organisation could lend a meeting room in central London for half a day, tick the box on the form.</p>
+<p><strong>Offering a venue?</strong> If your organisation could lend a meeting room in central London for half a day, say so on the form.</p>
 </div>
-<form id="signup" novalidate>
-<div><label for="f-name">Full name</label><input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="f-name-err" data-msg="Please enter your name."><div class="err" id="f-name-err"></div></div>
-<div><label for="f-title">Job title <span class="opt">(optional)</span></label><input id="f-title" name="title" type="text" autocomplete="organization-title"></div>
-<div><label for="f-org">Organisation</label><input id="f-org" name="org" type="text" autocomplete="organization" required aria-describedby="f-org-err" data-msg="Please enter your organisation."><div class="err" id="f-org-err"></div></div>
-<div><label for="f-email">Work email</label><input id="f-email" name="email" type="email" autocomplete="email" required aria-describedby="f-email-err" data-msg="Please enter a valid work email address."><div class="err" id="f-email-err"></div></div>
-<div><label for="f-group">Which describes you best?</label><select id="f-group" name="group" required aria-describedby="f-group-err" data-msg="Please choose the description that fits you best."><option value="">Please choose</option><option>Ministry of Defence or other government department</option><option>UK company</option><option>Overseas supplier</option><option>Other organisation</option></select><div class="err" id="f-group-err"></div></div>
-<label class="check" for="venue"><input id="venue" name="venue" type="checkbox">My organisation could host a meeting in central London</label>
+<div class="regcard">
+<p>The form takes about two minutes. It asks for:</p>
+<ul><li>your name and job title</li><li>your organisation and work email</li><li>which group describes you best</li><li>whether your organisation could lend a meeting room</li></ul>
 <p class="note">We use your details only to check your registration and to send UK-NOC invitations and updates. We never share them, and every email has an unsubscribe link. <a href="#privacy">How we use your details</a>.</p>
-<button class="btn" type="submit">Register interest</button>
-<p class="status" id="status" role="status" aria-live="polite" hidden></p>
-</form>
+<a class="btn" href="{REG_FORM}" target="_blank" rel="noopener">Register your interest</a>
+<p class="note">The form opens in a new tab, on Microsoft Forms.</p>
+</div>
 </div>
 </section>
 
@@ -367,26 +366,6 @@ c.addEventListener('mouseenter',()=>{if(!held)show(c.dataset.g)});
 c.addEventListener('mouseleave',()=>{if(!held)show(null)});
 c.addEventListener('click',()=>{held=held===c.dataset.g?null:c.dataset.g;show(held||null)});
 }
-for(const a of document.querySelectorAll('[data-venue]'))a.addEventListener('click',()=>{document.getElementById('venue').checked=true});
-const form=document.getElementById('signup');
-const status=document.getElementById('status');
-form.addEventListener('submit',e=>{
-e.preventDefault();
-let first=null;
-for(const el of form.querySelectorAll('[required]')){
-const bad=!el.value.trim()||(el.type==='email'&&!el.checkValidity());
-el.setAttribute('aria-invalid',bad?'true':'false');
-const m=document.getElementById(el.id+'-err');
-if(m)m.textContent=bad?el.dataset.msg:'';
-if(bad&&!first)first=el;
-}
-if(first){status.hidden=true;first.focus();return}
-const v=id=>document.getElementById(id).value.trim();
-const lines=['Please add me to the UK-NOC mailing list.','','Name: '+v('f-name'),'Job title: '+(v('f-title')||'-'),'Organisation: '+v('f-org'),'Work email: '+v('f-email'),'Group: '+v('f-group'),'Could host a meeting in central London: '+(document.getElementById('venue').checked?'Yes':'No')];
-status.innerHTML='Your email program should now open with your details filled in: please press <strong>Send</strong>. If nothing opens, email your details to <a href="mailto:__CONTACT__">__CONTACT__</a>.';
-status.hidden=false;
-location.href='mailto:__CONTACT__?subject='+encodeURIComponent('UK-NOC registration: '+v('f-org'))+'&body='+encodeURIComponent(lines.join('\n'));
-});
 }
 """
 
@@ -579,7 +558,7 @@ PAPERS_BODY = """
 if __name__ == "__main__":
     page("index.html", "UK National Offset Council",
          "An informal forum in central London for government, UK companies and overseas suppliers working with the UK Offset Policy.",
-         HOME, HOME_JS.replace("__CONTACT__", CONTACT))
+         HOME, HOME_JS)
     (OUT / "CNAME").write_text("nationaloffsetcouncil.uk\n", encoding="utf-8")
     (OUT / "robots.txt").write_text("User-agent: *\nAllow: /\nSitemap: https://nationaloffsetcouncil.uk/sitemap.xml\n", encoding="utf-8")
     (OUT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

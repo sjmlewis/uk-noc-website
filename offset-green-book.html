@@ -104,7 +104,9 @@ svg[data-hl=gov] .gov,svg[data-hl=uk] .uk,svg[data-hl=ovs] .ovs{opacity:1}
 .paper .also{margin-top:6px;font-size:15px;color:var(--ink)}
 .reg,.band.tint{background:var(--panel)}
 .reg .split{align-items:start}
-form{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
+form,.regcard{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
+.regcard p,.regcard ul{margin:0}
+.regcard ul{padding-left:22px;display:grid;gap:4px}
 label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
 .opt{font-weight:400;color:var(--muted)}
 input[type=text],input[type=email],select{width:100%;min-height:48px;padding:10px 12px;font:16px/1.3 Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px}
@@ -115,7 +117,7 @@ input:focus-visible,select:focus-visible,form .btn:focus-visible,main a:focus-vi
 .check{display:flex;gap:12px;align-items:flex-start;font-weight:400;margin:0}
 .check input{width:22px;height:22px;margin:2px 0 0;flex:none;accent-color:#0b4a55}
 .note{font-size:14px;color:var(--muted);margin:0}
-form .btn{background:var(--field);color:#fff;justify-self:start}
+form .btn,.regcard .btn{background:var(--field);color:#fff;justify-self:start}
 .status{border:1px solid var(--rule);border-radius:8px;padding:12px 14px;background:var(--panel);font-size:15px;margin:0}
 .status[hidden]{display:none}
 .small{font-size:15px}
