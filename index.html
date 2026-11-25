@@ -41,7 +41,7 @@ nav{display:flex;flex-wrap:wrap;gap:0 22px;font-size:15px}
 nav a{display:inline-block;padding:11px 0;text-decoration:none}
 nav a:hover,nav a[aria-current=page]{text-decoration:underline}
 .hero{padding-top:clamp(12px,3vw,32px)}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);grid-template-areas:"fig txt" "fig act";column-gap:clamp(24px,5vw,72px);align-items:center}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);grid-template-areas:"txt fig" "act fig";column-gap:clamp(24px,5vw,72px);align-items:center}
 .txt{grid-area:txt;align-self:end}
 .act{grid-area:act;align-self:start}
 .fig{grid-area:fig}
@@ -116,6 +116,30 @@ svg[data-hl=gov] .gov,svg[data-hl=uk] .uk,svg[data-hl=ovs] .ovs{opacity:1}
 .week+.week{margin-top:clamp(28px,4vw,44px)}
 .week .wk{display:flex;justify-content:space-between;gap:12px;font:600 15px/1.4 Inter,system-ui,sans-serif;color:var(--muted);margin:0 0 10px}
 @media(max-width:600px){.news li{grid-template-columns:minmax(0,1fr)}}
+.newsbox{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:18px 20px 14px;margin:8px 0}
+.nb-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 16px;margin-bottom:10px}
+.nb-head h2{font-size:26px;margin:0;color:#fff}
+.nb-key{margin:0;font-size:13px;color:#d6e7ea}
+.ukpill{display:inline-block;font:700 11px/1.7 Inter,system-ui,sans-serif;letter-spacing:.06em;background:var(--ovs);color:#1d1600;border-radius:4px;padding:0 6px;margin-right:8px;vertical-align:1px}
+.nb{list-style:none;margin:0;padding:0}
+.nb li{padding:10px 10px 10px 12px;border-top:1px solid rgba(255,255,255,.16);border-left:3px solid transparent}
+.nb li.uk{border-left-color:var(--ovs);background:rgba(255,207,92,.11)}
+.nb-meta{margin:0 0 3px;font-size:13px;color:#cfe2e6}
+.hero .nb a{display:block;color:#fff;text-decoration:none;font-size:16px;line-height:1.35}
+.hero .nb a:hover{text-decoration:underline}
+.hero .nb li.uk a{font:600 19px/1.3 Newsreader,Georgia,serif;color:#ffd978}
+.nb-more{display:flex;flex-wrap:wrap;gap:6px 22px;margin:4px 0 0;padding-top:10px;border-top:1px solid rgba(255,255,255,.16);font-size:14px}
+.hero .nb-more a{color:#fff}
+.who{background:var(--field);color:#f1f7f8}
+.who .intro{color:#d6e7ea}
+.whogrid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);grid-template-areas:"txt fig";gap:clamp(24px,5vw,72px);align-items:center}
+.wtxt{grid-area:txt}
+.wfig{grid-area:fig}
+.groups{display:grid;gap:18px;border-top:2px solid rgba(255,255,255,.55);padding-top:20px}
+.groups h3{display:flex;align-items:flex-start;gap:10px;color:#fff}
+.groups h3 .dot{margin-top:6px}
+.groups p{margin:0;color:#d6e7ea}
+@media(max-width:760px){.whogrid{grid-template-columns:minmax(0,1fr);grid-template-areas:"txt" "fig"}}
 .reg,.band.tint{background:var(--panel)}
 .reg .split{align-items:start}
 form,.regcard{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
@@ -158,7 +182,39 @@ footer a{color:#fff;overflow-wrap:anywhere}
 <p class="lede">An informal gathering in central London for people with an interest in UK Offset and the UK Offset Policy: officials from the Ministry of Defence and other government departments, UK companies and overseas suppliers. Each meeting is half a day, free to attend, and brings industry and government together on how Offset works in practice.</p>
 <p class="when">Meetings are held quarterly whenever possible.</p>
 </div>
-<div class="fig">
+<aside class="fig newsbox" aria-labelledby="h-latest">
+<div class="nb-head"><h2 id="h-latest">Latest news</h2><p class="nb-key"><span class="ukpill">UK</span>UK news is highlighted</p></div>
+<ul class="nb"><li class="uk"><p class="nb-meta"><span class="ukpill">UK</span>Ministry of Defence · Policy paper · 30 Oct 2026</p><a href="https://www.gov.uk/government/publications/uk-offset-policy">UK Offset Policy</a></li><li class="uk"><p class="nb-meta"><span class="ukpill">UK</span>Ministry of Defence, HM Treasury · Press release · 30 Oct 2026</p><a href="https://www.gov.uk/government/news/defence-contracts-to-prioritise-british-jobs-and-skills">Defence contracts to prioritise British jobs and skills</a></li><li class="uk"><p class="nb-meta"><span class="ukpill">UK</span>12 Nov 2026</p><a href="news.html#n20261116-10">UK to buy three offshore support vessels through Norway&#x27;s standardised vessel programme</a></li><li><p class="nb-meta">Netherlands · 20 Nov 2026</p><a href="news.html#n20261123-0">Netherlands takes first step to join the Finland-led CAVS programme for Patria 6x6 vehicles</a></li><li><p class="nb-meta">Netherlands · 20 Nov 2026</p><a href="news.html#n20261123-1">Dutch defence industry plan gives more weight to where products and components come from</a></li><li><p class="nb-meta">Bulgaria · 19 Nov 2026</p><a href="news.html#n20261123-2">Bulgaria&#x27;s Parliament approves a €696m purchase of 57 CAESAR howitzers from France</a></li><li><p class="nb-meta">Switzerland · 19 Nov 2026</p><a href="news.html#n20261123-3">Switzerland picks Thales Suisse for deployable Ground Master 200 air surveillance radars</a></li></ul>
+<p class="nb-more"><a href="updates.html">Official MOD updates</a><a href="news.html">All Offset news</a></p>
+</aside>
+<div class="act btns"><a class="btn p" href="#register">Register your interest</a><a class="btn s" href="#register">Offer a venue</a></div>
+</div>
+</section>
+
+<section class="band sec" id="about" aria-labelledby="h-about">
+<div class="wrap split">
+<h2 id="h-about">Why UK-NOC, and why now</h2>
+<div>
+<p>The Ministry of Defence published the <a href="uk-offset-policy.html">UK Offset Policy</a> in October 2026, applying Offset to large defence purchases from abroad. Overseas suppliers, their UK partners and government all gain from a shared, practical understanding of how commitments are set, met and credited.</p>
+<p>Many overseas companies already manage Offset obligations in other countries, and many UK companies already supply them. UK-NOC gives both a regular place to compare experience, raise practical problems early and understand the thinking behind the rules.</p>
+<p>It is deliberately informal: half a day of open discussion and networking, not a conference or a sales event.</p>
+<p>Between meetings, this site shares the Ministry of Defence's public announcements on UK Offset as they appear on GOV.UK, and a weekly round-up of Offset news from around the world.</p>
+</div>
+</div>
+</section>
+
+<section class="band who" id="who" aria-labelledby="h-who">
+<div class="wrap whogrid">
+<div class="wtxt">
+<h2 id="h-who">Who it is for</h2>
+<p class="intro">Anyone with a working interest in UK Offset is welcome.</p>
+<div class="groups">
+<div><h3><span class="dot" style="--c:var(--gov)"></span>The Ministry of Defence and government</h3><p>Officials responsible for UK Offset policy and defence procurement, invited to set out policy and hear industry's experience.</p></div>
+<div><h3><span class="dot" style="--c:var(--uk)"></span>UK companies</h3><p>UK companies of every size, from primes to SMEs, that partner with overseas suppliers or want to.</p></div>
+<div><h3><span class="dot" style="--c:var(--ovs)"></span>Overseas suppliers</h3><p>Overseas defence companies with UK Offset commitments, or expecting them on future UK contracts, and their UK subsidiaries.</p></div>
+</div>
+</div>
+<div class="wfig">
 <div class="plan">
 <svg id="tbl" viewBox="38 38 324 324" role="img" aria-labelledby="tbl-t">
 <title id="tbl-t">A round table with places set for government, UK companies and overseas suppliers</title>
@@ -182,49 +238,6 @@ footer a{color:#fff;overflow-wrap:anywhere}
 <button type="button" class="chip" data-g="uk" aria-pressed="false"><span class="dot" style="--c:var(--uk)"></span>UK companies</button>
 <button type="button" class="chip" data-g="ovs" aria-pressed="false"><span class="dot" style="--c:var(--ovs)"></span>Overseas suppliers</button>
 </div>
-</div>
-<div class="act btns"><a class="btn p" href="#register">Register your interest</a><a class="btn s" href="#register">Offer a venue</a></div>
-</div>
-</section>
-
-<section class="band sec" id="about" aria-labelledby="h-about">
-<div class="wrap split">
-<h2 id="h-about">Why UK-NOC, and why now</h2>
-<div>
-<p>The Ministry of Defence published the <a href="uk-offset-policy.html">UK Offset Policy</a> in October 2026, applying Offset to large defence purchases from abroad. Overseas suppliers, their UK partners and government all gain from a shared, practical understanding of how commitments are set, met and credited.</p>
-<p>Many overseas companies already manage Offset obligations in other countries, and many UK companies already supply them. UK-NOC gives both a regular place to compare experience, raise practical problems early and understand the thinking behind the rules.</p>
-<p>It is deliberately informal: half a day of open discussion and networking, not a conference or a sales event.</p>
-<p>Between meetings, this site shares the Ministry of Defence's public announcements on UK Offset as they appear on GOV.UK, and a weekly round-up of Offset news from around the world.</p>
-</div>
-</div>
-</section>
-
-<section class="band sec" id="updates" aria-labelledby="h-upd">
-<div class="wrap">
-<h2 id="h-upd">Official updates</h2>
-<p class="intro">The latest publications on UK Offset from the Ministry of Defence, collected automatically from GOV.UK.</p>
-<div class="papers upd"><div class="paper"><div><h3><a href="https://www.gov.uk/government/publications/uk-offset-policy">UK Offset Policy</a></h3><p>Securing additional UK industrial, capability, and economic benefit from selected overseas defence and security procurements.</p></div><p class="by"><span>Ministry of Defence</span><span>Policy paper</span><span>Published 30 October 2026</span></p></div><div class="paper"><div><h3><a href="https://www.gov.uk/government/news/defence-contracts-to-prioritise-british-jobs-and-skills">Defence contracts to prioritise British jobs and skills</a></h3><p>Overseas firms winning UK defence contracts to be required to invest benefits back into the UK under new Offsets policy.</p></div><p class="by"><span>Ministry of Defence, HM Treasury</span><span>Press release</span><span>Published 30 October 2026</span></p></div><div class="paper"><div><h3><a href="https://www.gov.uk/government/speeches/minister-for-defence-readiness-and-industry-luke-pollard-mp-keynote-speech-at-dprte-2026">Minister for Defence Readiness and Industry, Luke Pollard MP, Keynote Speech at DPRTE 2026</a></h3><p>The Minister for Defence Readiness and Industry, Luke Pollard MP, opened the two-day DPRTE 2026 conference with a keynote speech addressing topics such as procurement, innovation and skills.</p></div><p class="by"><span>Ministry of Defence</span><span>Speech</span><span>Published 25 March 2026</span></p></div></div>
-<p class="checked"><a href="updates.html">All official updates</a>. Last checked 25 November 2026.</p>
-</div>
-</section>
-
-<section class="band sec" id="news" aria-labelledby="h-news">
-<div class="wrap">
-<h2 id="h-news">Offset news</h2>
-<p class="intro">New defence sales around the world above the thresholds at which countries require Offset, and changes to the rules. Updated weekly.</p>
-<ul class="news"><li><div class="meta"><b>Netherlands</b><time datetime="2026-11-20">20 November 2026</time></div><div><h3><a href="news.html#n20261123-0">Netherlands takes first step to join the Finland-led CAVS programme for Patria 6x6 vehicles</a></h3><p>The Netherlands has signed a Technical Arrangement in Rotterdam as the first step towards becoming the eighth participant in the Common Armoured Vehicle System programme for Patria 6x6 armoured vehicles. No Dutch quantity or value has been published.</p></div></li><li><div class="meta"><b>Netherlands<span class="tag">Rules</span></b><time datetime="2026-11-20">20 November 2026</time></div><div><h3><a href="news.html#n20261123-1">Dutch defence industry plan gives more weight to where products and components come from</a></h3><p>The Netherlands&#x27; new defence industry plan says the Ministry of Defence will give more weight to the origin of products and suppliers in procurement decisions from 2027, and from early 2028 its guidelines will take account of where raw materials and components come from. The plan does not change the Dutch industrial participation rules.</p></div></li><li><div class="meta"><b>Bulgaria</b><time datetime="2026-11-19">19 November 2026</time></div><div><h3><a href="news.html#n20261123-2">Bulgaria&#x27;s Parliament approves a €696m purchase of 57 CAESAR howitzers from France</a></h3><p>Bulgaria&#x27;s Parliament voted on 19 November to approve a deal worth about €696 million for 57 CAESAR 155mm self-propelled howitzers from France, with additional components, funded through the EU&#x27;s SAFE loans and the defence budget. Delivery is planned to finish by the end of 2030.</p></div></li></ul>
-<p class="checked"><a href="news.html">All Offset news</a>. Last updated 23 November 2026.</p>
-</div>
-</section>
-
-<section class="band sec" id="who" aria-labelledby="h-who">
-<div class="wrap">
-<h2 id="h-who">Who it is for</h2>
-<p class="intro">Anyone with a working interest in UK Offset is welcome.</p>
-<div class="three">
-<div><h3><span class="dot" style="--c:var(--gov)"></span>The Ministry of Defence and government</h3><p>Officials responsible for UK Offset policy and defence procurement, invited to set out policy and hear industry's experience.</p></div>
-<div><h3><span class="dot" style="--c:var(--uk)"></span>UK companies</h3><p>UK companies of every size, from primes to SMEs, that partner with overseas suppliers or want to.</p></div>
-<div><h3><span class="dot" style="--c:var(--ovs)"></span>Overseas suppliers</h3><p>Overseas defence companies with UK Offset commitments, or expecting them on future UK contracts, and their UK subsidiaries.</p></div>
 </div>
 </div>
 </section>

@@ -64,7 +64,7 @@ nav{display:flex;flex-wrap:wrap;gap:0 22px;font-size:15px}
 nav a{display:inline-block;padding:11px 0;text-decoration:none}
 nav a:hover,nav a[aria-current=page]{text-decoration:underline}
 .hero{padding-top:clamp(12px,3vw,32px)}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);grid-template-areas:"fig txt" "fig act";column-gap:clamp(24px,5vw,72px);align-items:center}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);grid-template-areas:"txt fig" "act fig";column-gap:clamp(24px,5vw,72px);align-items:center}
 .txt{grid-area:txt;align-self:end}
 .act{grid-area:act;align-self:start}
 .fig{grid-area:fig}
@@ -139,6 +139,30 @@ svg[data-hl=gov] .gov,svg[data-hl=uk] .uk,svg[data-hl=ovs] .ovs{opacity:1}
 .week+.week{margin-top:clamp(28px,4vw,44px)}
 .week .wk{display:flex;justify-content:space-between;gap:12px;font:600 15px/1.4 Inter,system-ui,sans-serif;color:var(--muted);margin:0 0 10px}
 @media(max-width:600px){.news li{grid-template-columns:minmax(0,1fr)}}
+.newsbox{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:18px 20px 14px;margin:8px 0}
+.nb-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 16px;margin-bottom:10px}
+.nb-head h2{font-size:26px;margin:0;color:#fff}
+.nb-key{margin:0;font-size:13px;color:#d6e7ea}
+.ukpill{display:inline-block;font:700 11px/1.7 Inter,system-ui,sans-serif;letter-spacing:.06em;background:var(--ovs);color:#1d1600;border-radius:4px;padding:0 6px;margin-right:8px;vertical-align:1px}
+.nb{list-style:none;margin:0;padding:0}
+.nb li{padding:10px 10px 10px 12px;border-top:1px solid rgba(255,255,255,.16);border-left:3px solid transparent}
+.nb li.uk{border-left-color:var(--ovs);background:rgba(255,207,92,.11)}
+.nb-meta{margin:0 0 3px;font-size:13px;color:#cfe2e6}
+.hero .nb a{display:block;color:#fff;text-decoration:none;font-size:16px;line-height:1.35}
+.hero .nb a:hover{text-decoration:underline}
+.hero .nb li.uk a{font:600 19px/1.3 Newsreader,Georgia,serif;color:#ffd978}
+.nb-more{display:flex;flex-wrap:wrap;gap:6px 22px;margin:4px 0 0;padding-top:10px;border-top:1px solid rgba(255,255,255,.16);font-size:14px}
+.hero .nb-more a{color:#fff}
+.who{background:var(--field);color:#f1f7f8}
+.who .intro{color:#d6e7ea}
+.whogrid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);grid-template-areas:"txt fig";gap:clamp(24px,5vw,72px);align-items:center}
+.wtxt{grid-area:txt}
+.wfig{grid-area:fig}
+.groups{display:grid;gap:18px;border-top:2px solid rgba(255,255,255,.55);padding-top:20px}
+.groups h3{display:flex;align-items:flex-start;gap:10px;color:#fff}
+.groups h3 .dot{margin-top:6px}
+.groups p{margin:0;color:#d6e7ea}
+@media(max-width:760px){.whogrid{grid-template-columns:minmax(0,1fr);grid-template-areas:"txt" "fig"}}
 .reg,.band.tint{background:var(--panel)}
 .reg .split{align-items:start}
 form,.regcard{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
@@ -250,17 +274,6 @@ def update_rows(items):
 
 CHECKED = f'Last checked {long_date(UPD.get("checked", ""))}.' if UPD.get("checked") else ""
 
-UPDATES_HOME = f"""
-<section class="band sec" id="updates" aria-labelledby="h-upd">
-<div class="wrap">
-<h2 id="h-upd">Official updates</h2>
-<p class="intro">The latest publications on UK Offset from the Ministry of Defence, collected automatically from GOV.UK.</p>
-<div class="papers upd">{update_rows(UPD.get("items", [])[:3])}</div>
-<p class="checked"><a href="updates.html">All official updates</a>. {CHECKED}</p>
-</div>
-</section>
-"""
-
 # ------------------------------------------------------ weekly Offset news
 NEWS_FILE = OUT / "data" / "news.json"
 try:
@@ -331,16 +344,41 @@ def news_weeks(items):
     return "\n".join(out)
 
 
-NEWS_HOME = f"""
-<section class="band sec" id="news" aria-labelledby="h-news">
-<div class="wrap">
-<h2 id="h-news">Offset news</h2>
-<p class="intro">New defence sales around the world above the thresholds at which countries require Offset, and changes to the rules. Updated weekly.</p>
-{news_rows(NEWS_SHOWN[:3], True)}
-<p class="checked"><a href="news.html">All Offset news</a>. {NEWS_UPDATED}</p>
-</div>
-</section>
-"""
+def short_date(ym):
+    d = _day(ym)
+    return f"{d.day} {MONTHS[d.month - 1][:3]} {d.year}" if len(ym) == 10 else f"{MONTHS[d.month - 1][:3]} {d.year}"
+
+
+def is_uk(a):
+    return a.get("country", "").strip().lower() in ("united kingdom", "uk")
+
+
+def newsbox():
+    """The home page's news box: UK items first and highlighted, then the newest news from elsewhere."""
+    ref = _day(UPD["checked"]) if UPD.get("checked") else datetime.date.today()
+    official = [it for it in UPD.get("items", []) if (ref - _day(it["updated"])).days <= 183][:2]
+    uk_news = sorted((a for a in NEWS_SHOWN if is_uk(a)), key=lambda a: _day(a["date"]), reverse=True)
+    world = [a for a in NEWS_SHOWN if not is_uk(a)][:4]
+    rows = []
+    for it in official:
+        meta = " · ".join(x for x in (", ".join(it.get("orgs") or []), it.get("type", ""), short_date(it["updated"])) if x)
+        rows.append((True, meta, it["link"], it["title"]))
+    for a in uk_news:
+        rows.append((True, short_date(a["date"]), f"news.html#{a['id']}", a["title"]))
+    rows = rows[:3] + [(False, f"{a['country']} · {short_date(a['date'])}", f"news.html#{a['id']}", a["title"]) for a in world]
+    out = []
+    for uk, meta, href, title in rows:
+        cls = ' class="uk"' if uk else ""
+        pill = '<span class="ukpill">UK</span>' if uk else ""
+        out.append(f'<li{cls}><p class="nb-meta">{pill}{escape(meta)}</p><a href="{escape(href)}">{escape(title)}</a></li>')
+    return ('<aside class="fig newsbox" aria-labelledby="h-latest">\n'
+            '<div class="nb-head"><h2 id="h-latest">Latest news</h2><p class="nb-key"><span class="ukpill">UK</span>UK news is highlighted</p></div>\n'
+            f'<ul class="nb">{"".join(out)}</ul>\n'
+            '<p class="nb-more"><a href="updates.html">Official MOD updates</a><a href="news.html">All Offset news</a></p>\n'
+            '</aside>')
+
+
+NEWSBOX = newsbox()
 
 
 def page(name, title, desc, body, script=""):
@@ -385,16 +423,7 @@ HOME = f"""
 <p class="lede">An informal gathering in central London for people with an interest in UK Offset and the UK Offset Policy: officials from the Ministry of Defence and other government departments, UK companies and overseas suppliers. Each meeting is half a day, free to attend, and brings industry and government together on how Offset works in practice.</p>
 <p class="when">Meetings are held quarterly whenever possible.</p>
 </div>
-<div class="fig">
-<div class="plan">
-{TABLE_SVG}
-</div>
-<div class="legend" role="group" aria-label="Highlight a group at the table">
-<button type="button" class="chip" data-g="gov" aria-pressed="false"><span class="dot" style="--c:var(--gov)"></span>MOD and government</button>
-<button type="button" class="chip" data-g="uk" aria-pressed="false"><span class="dot" style="--c:var(--uk)"></span>UK companies</button>
-<button type="button" class="chip" data-g="ovs" aria-pressed="false"><span class="dot" style="--c:var(--ovs)"></span>Overseas suppliers</button>
-</div>
-</div>
+{NEWSBOX}
 <div class="act btns"><a class="btn p" href="#register">Register your interest</a><a class="btn s" href="#register">Offer a venue</a></div>
 </div>
 </section>
@@ -410,15 +439,27 @@ HOME = f"""
 </div>
 </div>
 </section>
-{UPDATES_HOME}{NEWS_HOME}
-<section class="band sec" id="who" aria-labelledby="h-who">
-<div class="wrap">
+
+<section class="band who" id="who" aria-labelledby="h-who">
+<div class="wrap whogrid">
+<div class="wtxt">
 <h2 id="h-who">Who it is for</h2>
 <p class="intro">Anyone with a working interest in UK Offset is welcome.</p>
-<div class="three">
+<div class="groups">
 <div><h3><span class="dot" style="--c:var(--gov)"></span>The Ministry of Defence and government</h3><p>Officials responsible for UK Offset policy and defence procurement, invited to set out policy and hear industry's experience.</p></div>
 <div><h3><span class="dot" style="--c:var(--uk)"></span>UK companies</h3><p>UK companies of every size, from primes to SMEs, that partner with overseas suppliers or want to.</p></div>
 <div><h3><span class="dot" style="--c:var(--ovs)"></span>Overseas suppliers</h3><p>Overseas defence companies with UK Offset commitments, or expecting them on future UK contracts, and their UK subsidiaries.</p></div>
+</div>
+</div>
+<div class="wfig">
+<div class="plan">
+{TABLE_SVG}
+</div>
+<div class="legend" role="group" aria-label="Highlight a group at the table">
+<button type="button" class="chip" data-g="gov" aria-pressed="false"><span class="dot" style="--c:var(--gov)"></span>MOD and government</button>
+<button type="button" class="chip" data-g="uk" aria-pressed="false"><span class="dot" style="--c:var(--uk)"></span>UK companies</button>
+<button type="button" class="chip" data-g="ovs" aria-pressed="false"><span class="dot" style="--c:var(--ovs)"></span>Overseas suppliers</button>
+</div>
 </div>
 </div>
 </section>

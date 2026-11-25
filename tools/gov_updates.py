@@ -34,6 +34,12 @@ SEARCHES = [
     # This one must work, or nothing is saved.
     {"q": "offset", "filter_organisations": "ministry-of-defence",
      "order": "-public_timestamp", "count": "50"},
+    # The "News and communications" list of GOV.UK's Defence and armed forces topic
+    # (https://www.gov.uk/defence-and-armed-forces), where the MOD announces Offset
+    # news, whichever department publishes it. Newest first.
+    {"q": "offset", "filter_part_of_taxonomy_tree": "e491505c-77ae-45b2-84be-8c94b94f6a2b",
+     "filter_content_purpose_supergroup": "news_and_communications",
+     "order": "-public_timestamp", "count": "50"},
 ]
 # A publication counts only if it uses one of these phrases. This keeps out
 # the many unrelated pages that mention "offset" in another sense
