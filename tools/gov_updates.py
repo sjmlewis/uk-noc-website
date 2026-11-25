@@ -34,8 +34,6 @@ SEARCHES = [
     # This one must work, or nothing is saved.
     {"q": "offset", "filter_organisations": "ministry-of-defence",
      "order": "-public_timestamp", "count": "50"},
-    # Anything else on GOV.UK about the UK Offset Policy, most relevant first.
-    {"q": "UK Offset Policy", "count": "50"},
 ]
 # A publication counts only if it uses one of these phrases. This keeps out
 # the many unrelated pages that mention "offset" in another sense
@@ -207,7 +205,8 @@ def main():
     out = {
         "checked": datetime.datetime.now(UK).date().isoformat(),
         "items": sorted(items.values(), key=lambda it: it["stamp"], reverse=True),
-        "seen": dict(sorted(seen.items())),
+        # keep only pages the search still returns, so the file does not grow forever
+        "seen": dict(sorted((p, t) for p, t in seen.items() if p in hits)),
     }
     DATA.parent.mkdir(parents=True, exist_ok=True)
     DATA.write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

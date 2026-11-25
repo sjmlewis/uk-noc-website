@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offset news | UK-NOC</title>
+<meta name="description" content="A weekly round-up of new defence sales around the world above countries' Offset thresholds, and changes to the rules.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Newsreader:opsz,wght@6..72,600&display=swap">
+<style>
+/* VOICE formal but relaxed: an independent forum's own site, calm and exact, nothing to sell
+   IDEA the table plan, meeting notice and reading pack for a round-table meeting in a London office
+   PICTURE a round table seen from above, places set for government, UK companies and overseas suppliers
+   COLOUR white paper and ink; a deep sea-teal field top and bottom; seat colours sky blue, coral and saffron
+   TYPE Newsreader 600 for headings, Inter for text
+   LAYOUT laptop: teal band with the table left, title and buttons right, ruled sections below. Phone: title, table, buttons */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0e1315);--ink:light-dark(#151a1d,#e6ecee);--muted:light-dark(#4b575d,#a7b4b9);--rule:light-dark(#d5dde0,#2a3439);--panel:light-dark(#f2f5f6,#141b1e);--field:light-dark(#0b4a55,#0a3840);--line:light-dark(#7d8b91,#5d6c72);--err:light-dark(#b3261e,#ff8a80);--focus:light-dark(#0b4a55,#7fd0dc);--link:light-dark(#0b4a55,#8fd6e1);--gov:#8ab4ff;--uk:#ff8f6b;--ovs:#ffcf5c}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:12px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Newsreader,Georgia,"Times New Roman",serif;font-weight:600;line-height:1.1;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(36px,5vw,54px);line-height:1.05;letter-spacing:-.02em;text-wrap:balance;margin-bottom:16px}
+h2{font-size:clamp(26px,3vw,34px);text-wrap:balance;margin-bottom:14px}
+h3{font-size:21px;margin-bottom:8px}
+p{margin:0 0 1em}
+a{color:inherit;text-underline-offset:3px}
+main a:not(.btn){color:var(--link)}
+dt{font-weight:600}
+dd{margin:0}
+.wrap{max-width:1180px;margin:0 auto}
+.band{padding-block:clamp(36px,5vw,72px);padding-inline:max(5vw,16px)}
+.draft{background:light-dark(#fff1c2,#3b300c);color:light-dark(#3d2f00,#ffe7a3);font-size:14px;padding:8px max(5vw,16px)}
+.top,.hero,.pagehead,footer{background:var(--field);color:#f1f7f8}
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 28px;padding:12px max(5vw,16px)}
+.mark{display:inline-flex;align-items:center;gap:10px;font:600 22px/1 Newsreader,Georgia,serif;text-decoration:none;padding:8px 0}
+.mark svg{width:30px;height:30px;flex:none}
+nav{display:flex;flex-wrap:wrap;gap:0 22px;font-size:15px}
+nav a{display:inline-block;padding:11px 0;text-decoration:none}
+nav a:hover,nav a[aria-current=page]{text-decoration:underline}
+.hero{padding-top:clamp(12px,3vw,32px)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);grid-template-areas:"fig txt" "fig act";column-gap:clamp(24px,5vw,72px);align-items:center}
+.txt{grid-area:txt;align-self:end}
+.act{grid-area:act;align-self:start}
+.fig{grid-area:fig}
+.lede,.pagehead p{font-size:18px;color:#d6e7ea;max-width:44em}
+.when{font-weight:600;margin:4px 0 22px}
+.pagehead h1{max-width:18em}
+.pagehead .btns{margin-top:22px}
+.crumbs{font-size:15px;margin:0 0 12px}
+.pagehead .crumbs a{color:#fff}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:6px;border:2px solid transparent;font:600 16px/1.2 Inter,system-ui,sans-serif;text-decoration:none;cursor:pointer}
+.btn.p{background:var(--ovs);color:#1d1600}
+.btn.s{border-color:rgba(255,255,255,.7);color:#fff}
+.btn.d{background:var(--field);color:#fff}
+.btn:hover{filter:brightness(1.07)}
+.top a:focus-visible,.hero a:focus-visible,.pagehead a:focus-visible,.chip:focus-visible,footer a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.plan{max-width:440px;margin:0 auto}
+.plan svg{display:block;width:100%;height:auto}
+.seat{transition:opacity .25s}
+svg[data-hl] .seat{opacity:.2}
+svg[data-hl=gov] .gov,svg[data-hl=uk] .uk,svg[data-hl=ovs] .ovs{opacity:1}
+.legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:22px;border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;font:15px/1.2 Inter,system-ui,sans-serif;cursor:pointer}
+.chip[aria-pressed=true]{background:rgba(255,255,255,.14);border-color:#fff}
+.dot{display:inline-block;width:13px;height:13px;border-radius:50%;background:var(--c);box-shadow:0 0 0 1.5px rgba(0,0,0,.28);flex:none}
+.split{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(20px,4vw,64px)}
+.split p{max-width:40em}
+.sec+.sec{border-top:1px solid var(--rule)}
+.intro{color:var(--muted);margin-bottom:22px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px clamp(20px,3vw,44px);border-top:2px solid var(--ink);padding-top:20px}
+.three h3{display:flex;align-items:flex-start;gap:10px}
+.three h3 .dot{margin-top:6px}
+.three p{margin:0;color:var(--muted)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px clamp(20px,3vw,44px);border-top:2px solid var(--ink);padding-top:20px}
+.two p{margin:0}
+.ruled{margin:0;border-top:2px solid var(--ink)}
+.ruled div{display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr);gap:4px 24px;padding:16px 0;border-bottom:1px solid var(--rule)}
+.ruled dt{font:600 20px/1.25 Newsreader,Georgia,serif}
+.ruled.short div{grid-template-columns:minmax(0,150px) minmax(0,1fr)}
+.ruled.small{font-size:15px}
+.ruled.small dt{font:600 15px/1.5 Inter,system-ui,sans-serif}
+.gb{display:block;font-weight:600;font-size:14px;color:var(--muted)}
+.notice{border:1px solid var(--rule);border-radius:10px;overflow:hidden;background:var(--bg)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;background:var(--panel)}
+.facts div{padding:18px 20px;border-left:1px solid var(--rule)}
+.facts div:first-child{border-left:0}
+.facts dt{font-size:14px;color:var(--muted);margin-bottom:4px}
+.rows{margin:0}
+.rows div{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:4px 24px;padding:16px 20px;border-top:1px solid var(--rule)}
+.list{margin:0;padding-left:1.2em;max-width:44em}
+.list li{margin:0 0 10px}
+.callout{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:18px 20px;font-size:15px;margin-top:28px;max-width:52em}
+.callout p:last-child{margin:0}
+.group+.group{margin-top:clamp(32px,4vw,52px)}
+.papers{border-top:2px solid var(--ink)}
+.paper{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 28px;padding:16px 0;border-bottom:1px solid var(--rule)}
+.paper h3{font-size:20px;margin:0 0 4px}
+.paper p{margin:0;color:var(--muted)}
+.paper .by{font-size:14px;color:var(--muted);white-space:nowrap;padding-top:4px}
+.paper .also{margin-top:6px;font-size:15px;color:var(--ink)}
+.upd .by{white-space:normal}
+@media(min-width:601px){.upd .paper{grid-template-columns:minmax(0,1fr) 16.5em}}
+.upd .by span{display:block}
+.checked{font-size:15px;color:var(--muted);margin:16px 0 0}
+.news{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.news li{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:4px 28px;padding:16px 0;border-bottom:1px solid var(--rule);scroll-margin-top:12px}
+.news .meta{font-size:14px;color:var(--muted)}
+.news .meta b{display:block;color:var(--ink);font-size:15px}
+.news .tag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line);border-radius:4px;padding:0 6px;margin-left:8px;vertical-align:1px}
+.news h3{font-size:20px;margin:0 0 4px}
+.news p{margin:0;color:var(--muted)}
+.week+.week{margin-top:clamp(28px,4vw,44px)}
+.week .wk{display:flex;justify-content:space-between;gap:12px;font:600 15px/1.4 Inter,system-ui,sans-serif;color:var(--muted);margin:0 0 10px}
+@media(max-width:600px){.news li{grid-template-columns:minmax(0,1fr)}}
+.reg,.band.tint{background:var(--panel)}
+.reg .split{align-items:start}
+form,.regcard{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
+.regcard p,.regcard ul{margin:0}
+.regcard ul{padding-left:22px;display:grid;gap:4px}
+label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
+.opt{font-weight:400;color:var(--muted)}
+input[type=text],input[type=email],select{width:100%;min-height:48px;padding:10px 12px;font:16px/1.3 Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px}
+input:focus-visible,select:focus-visible,form .btn:focus-visible,main a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+[aria-invalid=true]{border-color:var(--err)}
+.err{color:var(--err);font-size:14px;margin-top:4px}
+.err:empty{display:none}
+.check{display:flex;gap:12px;align-items:flex-start;font-weight:400;margin:0}
+.check input{width:22px;height:22px;margin:2px 0 0;flex:none;accent-color:#0b4a55}
+.note{font-size:14px;color:var(--muted);margin:0}
+form .btn,.regcard .btn{background:var(--field);color:#fff;justify-self:start}
+.status{border:1px solid var(--rule);border-radius:8px;padding:12px 14px;background:var(--panel);font-size:15px;margin:0}
+.status[hidden]{display:none}
+.small{font-size:15px}
+footer .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:16px 48px}
+footer p{margin:0 0 6px;color:#d6e7ea}
+footer .name{font:600 22px/1.2 Newsreader,Georgia,serif;color:#fff;margin-bottom:8px}
+footer a{color:#fff;overflow-wrap:anywhere}
+@media(max-width:900px){.three{grid-template-columns:minmax(0,1fr)}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}.facts div:nth-child(3){border-left:0}.facts div:nth-child(n+3){border-top:1px solid var(--rule)}}
+@media(max-width:640px){.split,.two,footer .wrap{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.hero .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"txt" "fig" "act";row-gap:18px}.plan{max-width:340px}.lede,.pagehead p{font-size:17px}.facts{grid-template-columns:minmax(0,1fr)}.facts div{border-left:0}.facts div+div{border-top:1px solid var(--rule)}.rows div,.ruled div,.ruled.short div,.paper{grid-template-columns:minmax(0,1fr)}.paper .by{white-space:normal;padding-top:0}}
+@media(prefers-reduced-motion:reduce){.seat{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body id="top">
+<header class="top">
+<a class="mark" href="index.html" aria-label="UK-NOC home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="2.8" r="2.6" fill="var(--gov)"/><circle cx="25.6" cy="21.1" r="2.6" fill="var(--uk)"/><circle cx="4.4" cy="21.1" r="2.6" fill="var(--ovs)"/></svg>UK-NOC</a>
+<nav aria-label="Sections"><a href="index.html#about">About</a><a href="index.html#who">Who it is for</a><a href="index.html#how">How it works</a><a href="updates.html">Updates</a><a href="news.html" aria-current="page">News</a><a href="papers.html">Policy papers</a><a href="index.html#register">Register</a></nav>
+</header>
+<main>
+<section class="pagehead band" aria-labelledby="t">
+<div class="wrap">
+<p class="crumbs"><a href="index.html">Home</a></p>
+<h1 id="t">Offset news</h1>
+<p>A weekly round-up of new defence sales around the world above the thresholds at which countries require Offset or industrial participation, and changes to those rules. Each summary is written from public reports.</p>
+</div>
+</section>
+<section class="band" aria-label="News">
+<div class="wrap">
+<p class="intro">Newest first. Updated weekly. Last updated 23 November 2026.</p>
+<div class="week"><h2 class="wk">Week of 23 November 2026<span>8 items</span></h2><ul class="news"><li id="n20261123-0"><div class="meta"><b>Netherlands</b><time datetime="2026-11-20">20 November 2026</time></div><div><h3>Netherlands takes first step to join the Finland-led CAVS programme for Patria 6x6 vehicles</h3><p>The Netherlands has signed a Technical Arrangement in Rotterdam as the first step towards becoming the eighth participant in the Common Armoured Vehicle System programme for Patria 6x6 armoured vehicles. No Dutch quantity or value has been published.</p></div></li><li id="n20261123-1"><div class="meta"><b>Netherlands<span class="tag">Rules</span></b><time datetime="2026-11-20">20 November 2026</time></div><div><h3>Dutch defence industry plan gives more weight to where products and components come from</h3><p>The Netherlands&#x27; new defence industry plan says the Ministry of Defence will give more weight to the origin of products and suppliers in procurement decisions from 2027, and from early 2028 its guidelines will take account of where raw materials and components come from. The plan does not change the Dutch industrial participation rules.</p></div></li><li id="n20261123-2"><div class="meta"><b>Bulgaria</b><time datetime="2026-11-19">19 November 2026</time></div><div><h3>Bulgaria&#x27;s Parliament approves a €696m purchase of 57 CAESAR howitzers from France</h3><p>Bulgaria&#x27;s Parliament voted on 19 November to approve a deal worth about €696 million for 57 CAESAR 155mm self-propelled howitzers from France, with additional components, funded through the EU&#x27;s SAFE loans and the defence budget. Delivery is planned to finish by the end of 2030.</p></div></li><li id="n20261123-3"><div class="meta"><b>Switzerland</b><time datetime="2026-11-19">19 November 2026</time></div><div><h3>Switzerland picks Thales Suisse for deployable Ground Master 200 air surveillance radars</h3><p>armasuisse has chosen Thales Suisse SA to supply deployable medium-range Ground Master 200 radars for the Swiss Air Force, replacing the TAFLIR system, after inviting bids from four European manufacturers. armasuisse cites greater Swiss industry involvement and technology transfer for radar maintenance; no value has been published.</p></div></li><li id="n20261123-4"><div class="meta"><b>India</b><time datetime="2026-11-18">18 November 2026</time></div><div><h3>India signs Rs 1,976 crore contract with IAI to upgrade the Navy&#x27;s Barak missile system</h3><p>India&#x27;s Ministry of Defence signed a Rs 1,976.40 crore contract with Israel Aerospace Industries on 18 November to upgrade the hardware and software of the Barak point defence missile system on Indian Navy ships. The value is just below India&#x27;s Rs 2,000 crore offset threshold, so no offset applies.</p></div></li><li id="n20261123-5"><div class="meta"><b>Morocco<span class="tag">Rules</span></b><time datetime="2026-11-18">18 November 2026</time></div><div><h3>Morocco launches a defence industry roadmap aiming to meet 40% of its needs locally by 2035</h3><p>King Mohammed VI chaired a session in Rabat on 18 November launching the Morocco Offer, a national roadmap for the defence and security industry that aims to meet about 40% of the country&#x27;s military and security needs locally by 2035.</p></div></li><li id="n20261123-6"><div class="meta"><b>Malaysia</b><time datetime="2026-11-17">17 November 2026</time></div><div><h3>Malaysia and France sign defence agreements, including 105mm artillery and a Scorpene upgrade</h3><p>During President Macron&#x27;s visit to Kuala Lumpur on 17 November, Malaysia and France signed seven letters of intent and three memoranda of understanding, including a proposed purchase of a KNDS 105mm light artillery system and work on the Navy&#x27;s Scorpene submarine mid-life upgrade. Malaysia&#x27;s defence minister said the Rafale is among the options for its future combat aircraft; no values were published.</p></div></li><li id="n20261123-7"><div class="meta"><b>Denmark</b><time datetime="2026-11-05">5 November 2026</time></div><div><h3>Denmark directly awards Saab a framework for laser duel training systems worth up to SEK 4.75bn</h3><p>Denmark&#x27;s Defence Acquisition and Logistics Organisation has directly awarded Saab a framework agreement for more BT46 instrumented laser duel simulation units and their servicing, estimated at SEK 3.75 billion and worth up to SEK 4.75 billion. It runs from November 2026 to January 2037, with a five-year extension option.</p></div></li></ul></div>
+<div class="week"><h2 class="wk">Week of 16 November 2026<span>10 items</span></h2><ul class="news"><li id="n20261116-8"><div class="meta"><b>Poland</b><time datetime="2026-11-13">13 November 2026</time></div><div><h3>Pentagon backs Poland&#x27;s request to buy Tomahawk cruise missiles and ground launchers</h3><p>Poland&#x27;s defence minister said on 13 November that the Pentagon has given a favourable recommendation to Poland&#x27;s request for Tomahawk cruise missiles and ground-based launchers; US congressional approval is still needed. No value has been published.</p></div></li><li id="n20261116-9"><div class="meta"><b>Malaysia</b><time datetime="2026-11-12">12 November 2026</time></div><div><h3>Malaysia picks Roketsan&#x27;s ATMACA to replace NSM on its Littoral Combat Ships</h3><p>Malaysia&#x27;s defence minister named the Turkish ATMACA anti-ship missile on 12 November as the preferred replacement for the Naval Strike Missile on the Navy&#x27;s Littoral Combat Ships, with talks with Türkiye to follow. No quantity or value has been published.</p></div></li><li id="n20261116-10"><div class="meta"><b>United Kingdom</b><time datetime="2026-11-12">12 November 2026</time></div><div><h3>UK to buy three offshore support vessels through Norway&#x27;s standardised vessel programme</h3><p>The UK and Norway agreed in Oslo on 12 November that the Royal Navy will buy three offshore support vessels for uncrewed mine-hunting, with an option for three more, through Norway&#x27;s P1118 programme; the UK has set aside an extra £90 million and the first ship is due in 2031. As a government-to-government purchase it is normally exempt from separate offset negotiations under the UK&#x27;s offset policy.</p></div></li><li id="n20261116-11"><div class="meta"><b>Bulgaria</b><time datetime="2026-11-11">11 November 2026</time></div><div><h3>Bulgaria approves joint purchase with Italy of up to 1,040 military transport vehicles</h3><p>Bulgaria&#x27;s Cabinet approved on 11 November a joint purchase with Italy of up to 1,040 military transport vehicles for up to €410 million, with the first stage of up to 700 vehicles (up to €290 million, 2027 to 2030) funded through the EU&#x27;s SAFE loans. Part of the equipment is to be assembled in Bulgaria with Bulgarian industry.</p></div></li><li id="n20261116-12"><div class="meta"><b>Denmark</b><time datetime="2026-11-11">11 November 2026</time></div><div><h3>Denmark orders SEK 350m of CV90 live training equipment from Saab</h3><p>Denmark&#x27;s Defence Acquisition and Logistics Organisation has ordered further live training equipment for its CV90 vehicles from Saab, including a laser duel system and drone and indirect-fire training, worth SEK 350 million (about US$35 million). Deliveries run from 2026 to 2028.</p></div></li><li id="n20261116-13"><div class="meta"><b>Belgium</b><time datetime="2026-11-09">9 November 2026</time></div><div><h3>Belgium orders 20 Rheinmetall Skyranger 30 air defence systems</h3><p>Belgium has ordered 20 Skyranger 30 air defence systems from Rheinmetall, with logistics, as part of its Blue Dome air defence programme, in a contract in the mid-hundreds of millions of euros. Deliveries are due to start in late 2028.</p></div></li><li id="n20261116-14"><div class="meta"><b>Peru</b><time datetime="2026-11-06">6 November 2026</time></div><div><h3>Peru&#x27;s Interior Ministry awards Katmerciler US$24.4m for 44 police water-cannon trucks</h3><p>Peru&#x27;s Ministry of the Interior has awarded Turkey&#x27;s Katmerciler a US$24.4 million contract for 44 water-cannon trucks for the National Police, with training and up to 60 months of preventive maintenance.</p></div></li><li id="n20261116-15"><div class="meta"><b>Brazil</b><time datetime="2026-11-05">5 November 2026</time></div><div><h3>Brazilian Army chooses MBDA&#x27;s EMADS medium-range air defence, worth up to R$3.4bn</h3><p>The Brazilian Army has chosen MBDA&#x27;s EMADS system with CAMM-ER missiles for three medium-range air defence batteries, with six launcher vehicles and four radar vehicles, at a reported cost of up to R$3.4 billion. The purchase still depends on commercial and government-to-government negotiations.</p></div></li><li id="n20261116-16"><div class="meta"><b>Lithuania<span class="tag">Rules</span></b><time datetime="2026-11-04">4 November 2026</time></div><div><h3>Lithuania to write named local suppliers into its infantry fighting vehicle contract</h3><p>Lithuania&#x27;s government approved a draft resolution on 4 November under which domestic industry participation in its tracked infantry fighting vehicle purchase, about 90 to 100 vehicles, would be a requirement of the supply contract itself, naming Lithuanian suppliers and their work, instead of a separate industrial cooperation agreement.</p></div></li><li id="n20261116-17"><div class="meta"><b>Greece</b><time datetime="2026-11-02">2 November 2026</time></div><div><h3>Greece signs for three Embraer KC-390 transport aircraft through Portugal</h3><p>Greece signed in Athens on 2 November for three Embraer KC-390 Millennium aircraft, with options for three more, in a government-to-government deal through Portugal, reported at about €590 million for the first three. The first aircraft is due in 2027.</p></div></li></ul></div>
+<div class="week"><h2 class="wk">Week of 9 November 2026<span>10 items</span></h2><ul class="news"><li id="n20261109-18"><div class="meta"><b>South Korea</b><time datetime="2026-11-06">6 November 2026</time></div><div><h3>South Korea selects the Sikorsky S-92A+ for its new VIP command helicopters</h3><p>South Korea&#x27;s Defense Acquisition Program Promotion Committee chose the Sikorsky S-92A+ on 6 November for its next command helicopter programme, with a total cost of about KRW 873 billion. Four helicopters will replace older Air Force aircraft by 2031, and the plan includes modification and maintenance technology and parts exports for Korean small firms.</p></div></li><li id="n20261109-19"><div class="meta"><b>Mexico</b><time datetime="2026-11-06">6 November 2026</time></div><div><h3>US approves a possible US$1.075bn sale of 11 UH-60M Black Hawk helicopters to Mexico</h3><p>The US State Department has approved a possible sale to Mexico of 11 Sikorsky UH-60M Black Hawk helicopters with spare engines, navigation systems, radios, training and support, estimated at US$1.075 billion.</p></div></li><li id="n20261109-20"><div class="meta"><b>Sweden</b><time datetime="2026-11-06">6 November 2026</time></div><div><h3>Saab wins about SEK 2bn from Naval Group to equip Sweden&#x27;s four new FDI frigates</h3><p>Naval Group has ordered weapon control systems and sensors worth about SEK 2 billion from Saab for the four FDI frigates it is building for the Royal Swedish Navy under a contract of about €4.3 billion signed on 31 August. Sweden does not have offset rules.</p></div></li><li id="n20261109-21"><div class="meta"><b>Denmark</b><time datetime="2026-11-06">6 November 2026</time></div><div><h3>Denmark and Lithuania join Finland-led joint purchase of Blocker naval mines</h3><p>Denmark and Lithuania have confirmed they are buying Forcit Defence&#x27;s Blocker naval mines through the five-nation Naval Mines Cooperation, under a framework contract Finland signed in June for the group. Finland has described the contract as worth hundreds of millions of euros; no figure per country has been published.</p></div></li><li id="n20261109-22"><div class="meta"><b>Philippines</b><time datetime="2026-11-05">5 November 2026</time></div><div><h3>India reported in final talks to sell the Philippines more BrahMos missile systems</h3><p>India is reported to be in final-stage talks to expand its BrahMos supersonic cruise missile sale to the Philippines, covering about five more systems and nearly 60 missiles, which Indian sources value at US$700–800 million. No deal has yet been announced.</p></div></li><li id="n20261109-23"><div class="meta"><b>Malaysia<span class="tag">Civil</span></b><time datetime="2026-11-05">5 November 2026</time></div><div><h3>Penang Mutiara Line LRT: RM2.69bn second civil contract awarded</h3><p>Malaysia Rapid Transit Corporation has awarded the RM2.69 billion second civil main contract for the Penang Mutiara Line light rail to a joint venture of China Communications Construction Company, TRC Construction and Ufuk Semarak. It covers about 5.5 km of line, including a 3.05 km sea-crossing bridge to Butterworth.</p></div></li><li id="n20261109-24"><div class="meta"><b>United Kingdom<span class="tag">Rules</span></b><time datetime="2026-11-04">4 November 2026</time></div><div><h3>UK offset details expected at the Defence Investment Summit on 1 December</h3><p>Details of how obligations under the UK&#x27;s new offset policy will be assessed, measured and enforced are expected at the Defence Investment Summit on 1 December. The policy is due to apply from April 2027 to contracts of £50 million or more, with each case considered individually.</p></div></li><li id="n20261109-25"><div class="meta"><b>Peru</b><time datetime="2026-11-02">2 November 2026</time></div><div><h3>Peru awards Leonardo €40.4m to support its four C-27J Spartan aircraft</h3><p>Peru&#x27;s armed forces procurement agency, ACFFAA, has awarded Leonardo a €40.4 million integrated support contract, as sole supplier, for the Peruvian Air Force&#x27;s four C-27J Spartan transport aircraft. Details of any offset on this award have not been published.</p></div></li><li id="n20261109-26"><div class="meta"><b>Peru</b><time datetime="2026-10-27">27 October 2026</time></div><div><h3>Peru seeks to speed up a purchase of 12 search and rescue helicopters, worth up to US$240m</h3><p>Peru&#x27;s government is trying to speed up the purchase of 12 search and rescue helicopters, six before the end of 2026 and six in 2027, at an estimated cost of up to US$240 million. Funding has not yet been allocated; the Leonardo AW139M and Airbus H145M are seen as leading candidates.</p></div></li><li id="n20261109-27"><div class="meta"><b>South Africa<span class="tag">Civil</span></b><time datetime="2026-10">October 2026</time></div><div><h3>Wabtec agrees a US$390m support deal for Transnet&#x27;s D43 and D44 locomotives</h3><p>Wabtec has agreed a multi-year contract worth US$390 million with state-owned Transnet Engineering for components, engineering advice and condition-monitoring software for its Class D43 and D44 freight locomotives, with localisation and training included.</p></div></li></ul></div>
+<div class="week"><h2 class="wk">Week of 2 November 2026<span>2 items</span></h2><ul class="news"><li id="n20261102-28"><div class="meta"><b>India</b><time datetime="2026-11-01">1 November 2026</time></div><div><h3>India reported close to a deal for six converted Boeing 767 tankers from IAI</h3><p>India is reported to be nearing an agreement with Israel Aerospace Industries, working with Hindustan Aeronautics, for six converted Boeing 767 tanker aircraft for the Indian Air Force, with a reference value of US$900 million to US$1.1 billion. Approval by the Cabinet Committee on Security is the next step before signature.</p></div></li><li id="n20261102-29"><div class="meta"><b>United Kingdom<span class="tag">Rules</span></b><time datetime="2026-10-30">30 October 2026</time></div><div><h3>UK publishes its offset policy: £50m default threshold, applied from April 2027</h3><p>The UK Government has published its offset policy. From April 2027, overseas defence suppliers winning selected contracts worth £50 million or more will normally be expected to reinvest up to the full contract value in the UK, agreed and monitored by a new Offset Authority.</p></div></li></ul></div>
+<p class="checked">Items stay on this page for three weeks.</p>
+</div>
+</section>
+</main>
+<footer class="band">
+<div class="wrap">
+<div><p class="name">UK National Offset Council</p><p>An informal, independent forum. It is not a government body and does not speak for the Ministry of Defence.</p></div>
+<div><p>Organised by Stephen Lewis.</p><p>Contact: <a href="mailto:stephen.lewis@nationaloffsetcouncil.uk">stephen.lewis@nationaloffsetcouncil.uk</a></p><p><a href="index.html#privacy">How we use your details</a></p></div>
+</div>
+</footer>
+</body>
+</html>

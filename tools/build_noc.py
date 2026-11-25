@@ -7,6 +7,7 @@ Edit this file, never the HTML, then run:  python3 build_noc.py
 The official updates come from data/gov_updates.json, which tools/gov_updates.py
 refreshes from GOV.UK (the GitHub Action "Official updates from GOV.UK" runs both).
 """
+import datetime
 import json
 from html import escape
 from pathlib import Path
@@ -128,6 +129,16 @@ svg[data-hl=gov] .gov,svg[data-hl=uk] .uk,svg[data-hl=ovs] .ovs{opacity:1}
 @media(min-width:601px){.upd .paper{grid-template-columns:minmax(0,1fr) 16.5em}}
 .upd .by span{display:block}
 .checked{font-size:15px;color:var(--muted);margin:16px 0 0}
+.news{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.news li{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:4px 28px;padding:16px 0;border-bottom:1px solid var(--rule);scroll-margin-top:12px}
+.news .meta{font-size:14px;color:var(--muted)}
+.news .meta b{display:block;color:var(--ink);font-size:15px}
+.news .tag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line);border-radius:4px;padding:0 6px;margin-left:8px;vertical-align:1px}
+.news h3{font-size:20px;margin:0 0 4px}
+.news p{margin:0;color:var(--muted)}
+.week+.week{margin-top:clamp(28px,4vw,44px)}
+.week .wk{display:flex;justify-content:space-between;gap:12px;font:600 15px/1.4 Inter,system-ui,sans-serif;color:var(--muted);margin:0 0 10px}
+@media(max-width:600px){.news li{grid-template-columns:minmax(0,1fr)}}
 .reg,.band.tint{background:var(--panel)}
 .reg .split{align-items:start}
 form,.regcard{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
@@ -178,7 +189,7 @@ MARK = ('<svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="
         '<circle cx="4.4" cy="21.1" r="2.6" fill="var(--ovs)"/></svg>')
 
 NAV = [("About", "#about"), ("Who it is for", "#who"), ("How it works", "#how"),
-       ("Updates", "updates.html"), ("Policy papers", "papers.html"), ("Register", "#register")]
+       ("Updates", "updates.html"), ("News", "news.html"), ("Policy papers", "papers.html"), ("Register", "#register")]
 
 
 def header(current):
@@ -199,7 +210,7 @@ def header(current):
 FOOTER = f"""<footer class="band">
 <div class="wrap">
 <div><p class="name">UK National Offset Council</p><p>An informal, independent forum. It is not a government body and does not speak for the Ministry of Defence.</p></div>
-<div><p>Contact: <a href="mailto:{CONTACT}">{CONTACT}</a></p><p><a href="index.html#privacy">How we use your details</a></p></div>
+<div><p>Organised by Stephen Lewis.</p><p>Contact: <a href="mailto:{CONTACT}">{CONTACT}</a></p><p><a href="index.html#privacy">How we use your details</a></p></div>
 </div>
 </footer>
 """
@@ -243,9 +254,90 @@ UPDATES_HOME = f"""
 <section class="band sec" id="updates" aria-labelledby="h-upd">
 <div class="wrap">
 <h2 id="h-upd">Official updates</h2>
-<p class="intro">The latest publications on UK Offset from the Ministry of Defence and other government departments, collected automatically from GOV.UK.</p>
+<p class="intro">The latest publications on UK Offset from the Ministry of Defence, collected automatically from GOV.UK.</p>
 <div class="papers upd">{update_rows(UPD.get("items", [])[:3])}</div>
 <p class="checked"><a href="updates.html">All official updates</a>. {CHECKED}</p>
+</div>
+</section>
+"""
+
+# ------------------------------------------------------ weekly Offset news
+NEWS_FILE = OUT / "data" / "news.json"
+try:
+    NEWS = json.loads(NEWS_FILE.read_text(encoding="utf-8"))
+except FileNotFoundError:
+    NEWS = {"updated": "", "items": []}
+NEWS_DAYS, NEWS_MIN, NEWS_MAX = 21, 8, 30  # show three weeks, at least 8 and at most 30 items
+
+
+def _day(ym):
+    """'YYYY-MM-DD' as a date; 'YYYY-MM' as the first of that month."""
+    return datetime.date.fromisoformat(ym if len(ym) == 10 else ym + "-01")
+
+
+def news_when(ym):
+    d = _day(ym)
+    return f"{d.day} {MONTHS[d.month - 1]} {d.year}" if len(ym) == 10 else f"{MONTHS[d.month - 1]} {d.year}"
+
+
+_news = []
+for _n, _a in enumerate(NEWS.get("items", [])):
+    _a = dict(_a)
+    _a.setdefault("added", NEWS.get("updated") or _a["date"])
+    _a["id"] = "n" + _day(_a["added"]).strftime("%Y%m%d") + "-" + str(_n)
+    _news.append(_a)
+_news.sort(key=lambda a: (_day(a["added"]), _day(a["date"])), reverse=True)
+if NEWS.get("updated"):
+    _cut = _day(NEWS["updated"]) - datetime.timedelta(days=NEWS_DAYS)
+    NEWS_SHOWN = [a for a in _news if _day(a["added"]) >= _cut]
+    if len(NEWS_SHOWN) < NEWS_MIN:
+        NEWS_SHOWN = _news[:NEWS_MIN]
+    NEWS_SHOWN = NEWS_SHOWN[:NEWS_MAX]
+else:
+    NEWS_SHOWN = []
+NEWS_UPDATED = f"Last updated {long_date(NEWS['updated'])}." if NEWS.get("updated") else ""
+
+
+def news_rows(items, on_home):
+    rows = []
+    for a in items:
+        tag = f'<span class="tag">{escape(a["tag"])}</span>' if a.get("tag") else ""
+        title = escape(a["title"])
+        if on_home:
+            title, anchor = f'<a href="news.html#{a["id"]}">{title}</a>', ""
+        else:
+            anchor = f' id="{a["id"]}"'
+        rows.append(f'<li{anchor}><div class="meta"><b>{escape(a["country"])}{tag}</b>'
+                    f'<time datetime="{escape(a["date"])}">{news_when(a["date"])}</time></div>'
+                    f'<div><h3>{title}</h3><p>{escape(a["summary"])}</p></div></li>')
+    return '<ul class="news">' + "".join(rows) + "</ul>" if rows else '<p class="intro">No news yet.</p>'
+
+
+def news_weeks(items):
+    """Items grouped under the Monday of the week they were added."""
+    groups, order = {}, []
+    for a in items:
+        d = _day(a["added"])
+        monday = d - datetime.timedelta(days=d.weekday())
+        if monday not in groups:
+            groups[monday] = []
+            order.append(monday)
+        groups[monday].append(a)
+    out = []
+    for m in order:
+        n = len(groups[m])
+        out.append(f'<div class="week"><h2 class="wk">Week of {m.day} {MONTHS[m.month - 1]} {m.year}<span>{n} item{"s" if n != 1 else ""}</span></h2>'
+                   f'{news_rows(groups[m], False)}</div>')
+    return "\n".join(out)
+
+
+NEWS_HOME = f"""
+<section class="band sec" id="news" aria-labelledby="h-news">
+<div class="wrap">
+<h2 id="h-news">Offset news</h2>
+<p class="intro">New defence sales around the world above the thresholds at which countries require Offset, and changes to the rules. Updated weekly.</p>
+{news_rows(NEWS_SHOWN[:3], True)}
+<p class="checked"><a href="news.html">All Offset news</a>. {NEWS_UPDATED}</p>
 </div>
 </section>
 """
@@ -314,10 +406,11 @@ HOME = f"""
 <p>The Ministry of Defence published the <a href="uk-offset-policy.html">UK Offset Policy</a> in October 2026, applying Offset to large defence purchases from abroad. Overseas suppliers, their UK partners and government all gain from a shared, practical understanding of how commitments are set, met and credited.</p>
 <p>Many overseas companies already manage Offset obligations in other countries, and many UK companies already supply them. UK-NOC gives both a regular place to compare experience, raise practical problems early and understand the thinking behind the rules.</p>
 <p>It is deliberately informal: half a day of open discussion and networking, not a conference or a sales event.</p>
+<p>Between meetings, this site shares the Ministry of Defence's public announcements on UK Offset as they appear on GOV.UK, and a weekly round-up of Offset news from around the world.</p>
 </div>
 </div>
 </section>
-
+{UPDATES_HOME}{NEWS_HOME}
 <section class="band sec" id="who" aria-labelledby="h-who">
 <div class="wrap">
 <h2 id="h-who">Who it is for</h2>
@@ -354,12 +447,12 @@ HOME = f"""
 <dl class="rows">
 <div><dt>Ground rules</dt><dd>Policy and general practice only. Live competitions, individual bids and prices are not discussed.</dd></div>
 <div><dt>Chatham House Rule</dt><dd>All meetings are held under the Chatham House Rule. You may use what you hear, but you may not reveal who said it or which organisation they represent. This allows everyone to speak freely.</dd></div>
-<div><dt>Independence</dt><dd>UK-NOC is independent. It is not a government body and does not speak for the Ministry of Defence.</dd></div>
+<div><dt>Organiser</dt><dd>Stephen Lewis organises each meeting. UK-NOC is independent: it is not a government body and does not speak for the Ministry of Defence.</dd></div>
 </dl>
 </div>
 </div>
 </section>
-{UPDATES_HOME}
+
 <section class="band sec" id="papers" aria-labelledby="h-papers">
 <div class="wrap">
 <h2 id="h-papers">Policy papers</h2>
@@ -393,7 +486,7 @@ HOME = f"""
 <div class="wrap split">
 <h2 id="h-priv">How we use your details</h2>
 <dl class="ruled small">
-<div><dt>Who is responsible</dt><dd>Capital Offset Services Limited, which organises UK-NOC. Registered in England and Wales, company number 08803140.</dd></div>
+<div><dt>Who is responsible</dt><dd>Stephen Lewis, who organises UK-NOC. Contact: <a href="mailto:{CONTACT}">{CONTACT}</a></dd></div>
 <div><dt>What we keep</dt><dd>Your name, job title, organisation, work email, the group you belong to, and whether you can offer a venue.</dd></div>
 <div><dt>Why</dt><dd>To check your registration before adding you to the mailing list, then to send invitations and updates about UK-NOC meetings and to plan each meeting. We rely on your consent.</dd></div>
 <div><dt>Who else sees them</dt><dd>No one. Our email and mailing-list providers store them for us, under contract.</dd></div>
@@ -612,13 +705,30 @@ UPDATES_BODY = f"""
 <div class="wrap">
 <p class="crumbs"><a href="index.html">Home</a></p>
 <h1 id="t">Official updates</h1>
-<p>Publications on UK Offset from the Ministry of Defence and other government departments, newest first. The list updates itself from GOV.UK, and each title links to the official page.</p>
+<p>Publications on UK Offset from the Ministry of Defence, newest first. The list updates itself from GOV.UK, and each title links to the official page.</p>
 </div>
 </section>
 <section class="band" aria-label="Updates">
 <div class="wrap">
 <div class="papers upd">{update_rows(UPD.get("items", []))}</div>
 <div class="callout"><p>{CHECKED} Titles and summaries are GOV.UK's own, and GOV.UK holds the current version of each document.</p>{OGL_LINE}</div>
+</div>
+</section>
+"""
+
+NEWS_BODY = f"""
+<section class="pagehead band" aria-labelledby="t">
+<div class="wrap">
+<p class="crumbs"><a href="index.html">Home</a></p>
+<h1 id="t">Offset news</h1>
+<p>A weekly round-up of new defence sales around the world above the thresholds at which countries require Offset or industrial participation, and changes to those rules. Each summary is written from public reports.</p>
+</div>
+</section>
+<section class="band" aria-label="News">
+<div class="wrap">
+<p class="intro">Newest first. Updated weekly. {NEWS_UPDATED}</p>
+{news_weeks(NEWS_SHOWN)}
+<p class="checked">Items stay on this page for three weeks.</p>
 </div>
 </section>
 """
@@ -630,7 +740,7 @@ if __name__ == "__main__":
     (OUT / "CNAME").write_text("nationaloffsetcouncil.uk\n", encoding="utf-8")
     (OUT / "robots.txt").write_text("User-agent: *\nAllow: /\nSitemap: https://nationaloffsetcouncil.uk/sitemap.xml\n", encoding="utf-8")
     (OUT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        + "".join(f"  <url><loc>https://nationaloffsetcouncil.uk/{u}</loc></url>\n" for u in ("", "updates.html", "uk-offset-policy.html", "offset-green-book.html", "papers.html"))
+        + "".join(f"  <url><loc>https://nationaloffsetcouncil.uk/{u}</loc></url>\n" for u in ("", "updates.html", "news.html", "uk-offset-policy.html", "offset-green-book.html", "papers.html"))
         + "</urlset>\n", encoding="utf-8")
     page("uk-offset-policy.html", "The UK Offset Policy in brief | UK-NOC",
          "The main points of the UK Offset Policy published by the Ministry of Defence on 30 October 2026.", POLICY)
@@ -639,5 +749,8 @@ if __name__ == "__main__":
     page("papers.html", "Policy papers | UK-NOC",
          "Official documents on UK Offset, defence and industry, and the land, sea, air and space strategies.", PAPERS_BODY)
     page("updates.html", "Official updates | UK-NOC",
-         "Publications on UK Offset from the Ministry of Defence and other government departments, updated automatically from GOV.UK.",
+         "Publications on UK Offset from the Ministry of Defence, updated automatically from GOV.UK.",
          UPDATES_BODY)
+    page("news.html", "Offset news | UK-NOC",
+         "A weekly round-up of new defence sales around the world above countries' Offset thresholds, and changes to the rules.",
+         NEWS_BODY)

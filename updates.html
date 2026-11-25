@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Official updates | UK-NOC</title>
-<meta name="description" content="Publications on UK Offset from the Ministry of Defence and other government departments, updated automatically from GOV.UK.">
+<meta name="description" content="Publications on UK Offset from the Ministry of Defence, updated automatically from GOV.UK.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Newsreader:opsz,wght@6..72,600&display=swap">
@@ -106,6 +106,16 @@ svg[data-hl=gov] .gov,svg[data-hl=uk] .uk,svg[data-hl=ovs] .ovs{opacity:1}
 @media(min-width:601px){.upd .paper{grid-template-columns:minmax(0,1fr) 16.5em}}
 .upd .by span{display:block}
 .checked{font-size:15px;color:var(--muted);margin:16px 0 0}
+.news{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.news li{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:4px 28px;padding:16px 0;border-bottom:1px solid var(--rule);scroll-margin-top:12px}
+.news .meta{font-size:14px;color:var(--muted)}
+.news .meta b{display:block;color:var(--ink);font-size:15px}
+.news .tag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line);border-radius:4px;padding:0 6px;margin-left:8px;vertical-align:1px}
+.news h3{font-size:20px;margin:0 0 4px}
+.news p{margin:0;color:var(--muted)}
+.week+.week{margin-top:clamp(28px,4vw,44px)}
+.week .wk{display:flex;justify-content:space-between;gap:12px;font:600 15px/1.4 Inter,system-ui,sans-serif;color:var(--muted);margin:0 0 10px}
+@media(max-width:600px){.news li{grid-template-columns:minmax(0,1fr)}}
 .reg,.band.tint{background:var(--panel)}
 .reg .split{align-items:start}
 form,.regcard{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
@@ -138,14 +148,14 @@ footer a{color:#fff;overflow-wrap:anywhere}
 <body id="top">
 <header class="top">
 <a class="mark" href="index.html" aria-label="UK-NOC home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="2.8" r="2.6" fill="var(--gov)"/><circle cx="25.6" cy="21.1" r="2.6" fill="var(--uk)"/><circle cx="4.4" cy="21.1" r="2.6" fill="var(--ovs)"/></svg>UK-NOC</a>
-<nav aria-label="Sections"><a href="index.html#about">About</a><a href="index.html#who">Who it is for</a><a href="index.html#how">How it works</a><a href="updates.html" aria-current="page">Updates</a><a href="papers.html">Policy papers</a><a href="index.html#register">Register</a></nav>
+<nav aria-label="Sections"><a href="index.html#about">About</a><a href="index.html#who">Who it is for</a><a href="index.html#how">How it works</a><a href="updates.html" aria-current="page">Updates</a><a href="news.html">News</a><a href="papers.html">Policy papers</a><a href="index.html#register">Register</a></nav>
 </header>
 <main>
 <section class="pagehead band" aria-labelledby="t">
 <div class="wrap">
 <p class="crumbs"><a href="index.html">Home</a></p>
 <h1 id="t">Official updates</h1>
-<p>Publications on UK Offset from the Ministry of Defence and other government departments, newest first. The list updates itself from GOV.UK, and each title links to the official page.</p>
+<p>Publications on UK Offset from the Ministry of Defence, newest first. The list updates itself from GOV.UK, and each title links to the official page.</p>
 </div>
 </section>
 <section class="band" aria-label="Updates">
@@ -158,7 +168,7 @@ footer a{color:#fff;overflow-wrap:anywhere}
 <footer class="band">
 <div class="wrap">
 <div><p class="name">UK National Offset Council</p><p>An informal, independent forum. It is not a government body and does not speak for the Ministry of Defence.</p></div>
-<div><p>Contact: <a href="mailto:stephen.lewis@nationaloffsetcouncil.uk">stephen.lewis@nationaloffsetcouncil.uk</a></p><p><a href="index.html#privacy">How we use your details</a></p></div>
+<div><p>Organised by Stephen Lewis.</p><p>Contact: <a href="mailto:stephen.lewis@nationaloffsetcouncil.uk">stephen.lewis@nationaloffsetcouncil.uk</a></p><p><a href="index.html#privacy">How we use your details</a></p></div>
 </div>
 </footer>
 </body>
