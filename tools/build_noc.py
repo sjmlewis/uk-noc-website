@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Build the UK National Offset Council (UK-NOC) website.
 
-Writes four pages next to this file:
-  index.html, uk-offset-policy.html, offset-green-book.html, papers.html
+Writes five pages next to this file:
+  index.html, uk-offset-policy.html, offset-green-book.html, papers.html, updates.html
 Edit this file, never the HTML, then run:  python3 build_noc.py
+The official updates come from data/gov_updates.json, which tools/gov_updates.py
+refreshes from GOV.UK (the GitHub Action "Official updates from GOV.UK" runs both).
 """
+import json
+from html import escape
 from pathlib import Path
 
 OUT = Path(__file__).resolve().parent
@@ -120,6 +124,10 @@ svg[data-hl=gov] .gov,svg[data-hl=uk] .uk,svg[data-hl=ovs] .ovs{opacity:1}
 .paper p{margin:0;color:var(--muted)}
 .paper .by{font-size:14px;color:var(--muted);white-space:nowrap;padding-top:4px}
 .paper .also{margin-top:6px;font-size:15px;color:var(--ink)}
+.upd .by{white-space:normal}
+@media(min-width:601px){.upd .paper{grid-template-columns:minmax(0,1fr) 16.5em}}
+.upd .by span{display:block}
+.checked{font-size:15px;color:var(--muted);margin:16px 0 0}
 .reg,.band.tint{background:var(--panel)}
 .reg .split{align-items:start}
 form,.regcard{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
@@ -170,7 +178,7 @@ MARK = ('<svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="
         '<circle cx="4.4" cy="21.1" r="2.6" fill="var(--ovs)"/></svg>')
 
 NAV = [("About", "#about"), ("Who it is for", "#who"), ("How it works", "#how"),
-       ("Policy papers", "papers.html"), ("Register", "#register")]
+       ("Updates", "updates.html"), ("Policy papers", "papers.html"), ("Register", "#register")]
 
 
 def header(current):
@@ -191,12 +199,56 @@ def header(current):
 FOOTER = f"""<footer class="band">
 <div class="wrap">
 <div><p class="name">UK National Offset Council</p><p>An informal, independent forum. It is not a government body and does not speak for the Ministry of Defence.</p></div>
-<div><p>Organised by Capital Offset Services Limited, registered in England and Wales, company number 08803140.</p><p>Contact: <a href="mailto:{CONTACT}">{CONTACT}</a></p></div>
+<div><p>Contact: <a href="mailto:{CONTACT}">{CONTACT}</a></p><p><a href="index.html#privacy">How we use your details</a></p></div>
 </div>
 </footer>
 """
 
 OGL_LINE = f'<p class="small">Contains public sector information licensed under the <a href="{OGL}">Open Government Licence v3.0</a>.</p>'
+
+# ------------------------------------------------ official updates from GOV.UK
+UPDATES_FILE = OUT / "data" / "gov_updates.json"
+try:
+    UPD = json.loads(UPDATES_FILE.read_text(encoding="utf-8"))
+except FileNotFoundError:
+    UPD = {"checked": "", "items": []}
+MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+          "August", "September", "October", "November", "December"]
+
+
+def long_date(iso):
+    """'2026-10-30' -> '30 October 2026'."""
+    if not iso:
+        return ""
+    y, m, d = iso.split("-")
+    return f"{int(d)} {MONTHS[int(m) - 1]} {y}"
+
+
+def update_rows(items):
+    rows = []
+    for it in items:
+        by = [", ".join(it.get("orgs") or []), it.get("type") or "", f"Published {long_date(it['published'])}"]
+        if it.get("updated") and it["updated"] != it["published"]:
+            by.append(f"Updated {long_date(it['updated'])}")
+        note = f'<p class="also">{escape(it["note"])}</p>' if it.get("note") else ""
+        rows.append(f'<div class="paper"><div><h3><a href="{escape(it["link"])}">{escape(it["title"])}</a></h3>'
+                    f'<p>{escape(it.get("summary") or "")}</p>{note}</div>'
+                    f'<p class="by">{"".join(f"<span>{escape(b)}</span>" for b in by if b)}</p></div>')
+    return "".join(rows) or '<p class="intro" style="margin:16px 0 0">No updates yet.</p>'
+
+
+CHECKED = f'Last checked {long_date(UPD.get("checked", ""))}.' if UPD.get("checked") else ""
+
+UPDATES_HOME = f"""
+<section class="band sec" id="updates" aria-labelledby="h-upd">
+<div class="wrap">
+<h2 id="h-upd">Official updates</h2>
+<p class="intro">The latest publications on UK Offset from the Ministry of Defence and other government departments, collected automatically from GOV.UK.</p>
+<div class="papers upd">{update_rows(UPD.get("items", [])[:3])}</div>
+<p class="checked"><a href="updates.html">All official updates</a>. {CHECKED}</p>
+</div>
+</section>
+"""
 
 
 def page(name, title, desc, body, script=""):
@@ -302,12 +354,12 @@ HOME = f"""
 <dl class="rows">
 <div><dt>Ground rules</dt><dd>Policy and general practice only. Live competitions, individual bids and prices are not discussed.</dd></div>
 <div><dt>Chatham House Rule</dt><dd>All meetings are held under the Chatham House Rule. You may use what you hear, but you may not reveal who said it or which organisation they represent. This allows everyone to speak freely.</dd></div>
-<div><dt>Organiser</dt><dd>Capital Offset Services Limited organises each meeting. UK-NOC is independent: it is not a government body and does not speak for the Ministry of Defence.</dd></div>
+<div><dt>Independence</dt><dd>UK-NOC is independent. It is not a government body and does not speak for the Ministry of Defence.</dd></div>
 </dl>
 </div>
 </div>
 </section>
-
+{UPDATES_HOME}
 <section class="band sec" id="papers" aria-labelledby="h-papers">
 <div class="wrap">
 <h2 id="h-papers">Policy papers</h2>
@@ -555,6 +607,22 @@ PAPERS_BODY = """
 </section>
 """
 
+UPDATES_BODY = f"""
+<section class="pagehead band" aria-labelledby="t">
+<div class="wrap">
+<p class="crumbs"><a href="index.html">Home</a></p>
+<h1 id="t">Official updates</h1>
+<p>Publications on UK Offset from the Ministry of Defence and other government departments, newest first. The list updates itself from GOV.UK, and each title links to the official page.</p>
+</div>
+</section>
+<section class="band" aria-label="Updates">
+<div class="wrap">
+<div class="papers upd">{update_rows(UPD.get("items", []))}</div>
+<div class="callout"><p>{CHECKED} Titles and summaries are GOV.UK's own, and GOV.UK holds the current version of each document.</p>{OGL_LINE}</div>
+</div>
+</section>
+"""
+
 if __name__ == "__main__":
     page("index.html", "UK National Offset Council",
          "An informal forum in central London for government, UK companies and overseas suppliers working with the UK Offset Policy.",
@@ -562,7 +630,7 @@ if __name__ == "__main__":
     (OUT / "CNAME").write_text("nationaloffsetcouncil.uk\n", encoding="utf-8")
     (OUT / "robots.txt").write_text("User-agent: *\nAllow: /\nSitemap: https://nationaloffsetcouncil.uk/sitemap.xml\n", encoding="utf-8")
     (OUT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        + "".join(f"  <url><loc>https://nationaloffsetcouncil.uk/{u}</loc></url>\n" for u in ("", "uk-offset-policy.html", "offset-green-book.html", "papers.html"))
+        + "".join(f"  <url><loc>https://nationaloffsetcouncil.uk/{u}</loc></url>\n" for u in ("", "updates.html", "uk-offset-policy.html", "offset-green-book.html", "papers.html"))
         + "</urlset>\n", encoding="utf-8")
     page("uk-offset-policy.html", "The UK Offset Policy in brief | UK-NOC",
          "The main points of the UK Offset Policy published by the Ministry of Defence on 30 October 2026.", POLICY)
@@ -570,3 +638,6 @@ if __name__ == "__main__":
          "How HM Treasury's Green Book principles are expected to shape the value of UK Offset projects.", GREEN)
     page("papers.html", "Policy papers | UK-NOC",
          "Official documents on UK Offset, defence and industry, and the land, sea, air and space strategies.", PAPERS_BODY)
+    page("updates.html", "Official updates | UK-NOC",
+         "Publications on UK Offset from the Ministry of Defence and other government departments, updated automatically from GOV.UK.",
+         UPDATES_BODY)

@@ -102,6 +102,10 @@ svg[data-hl=gov] .gov,svg[data-hl=uk] .uk,svg[data-hl=ovs] .ovs{opacity:1}
 .paper p{margin:0;color:var(--muted)}
 .paper .by{font-size:14px;color:var(--muted);white-space:nowrap;padding-top:4px}
 .paper .also{margin-top:6px;font-size:15px;color:var(--ink)}
+.upd .by{white-space:normal}
+@media(min-width:601px){.upd .paper{grid-template-columns:minmax(0,1fr) 16.5em}}
+.upd .by span{display:block}
+.checked{font-size:15px;color:var(--muted);margin:16px 0 0}
 .reg,.band.tint{background:var(--panel)}
 .reg .split{align-items:start}
 form,.regcard{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
@@ -134,7 +138,7 @@ footer a{color:#fff;overflow-wrap:anywhere}
 <body id="top">
 <header class="top">
 <a class="mark" href="#top" aria-label="UK-NOC home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="2.8" r="2.6" fill="var(--gov)"/><circle cx="25.6" cy="21.1" r="2.6" fill="var(--uk)"/><circle cx="4.4" cy="21.1" r="2.6" fill="var(--ovs)"/></svg>UK-NOC</a>
-<nav aria-label="Sections"><a href="#about">About</a><a href="#who">Who it is for</a><a href="#how">How it works</a><a href="papers.html">Policy papers</a><a href="#register">Register</a></nav>
+<nav aria-label="Sections"><a href="#about">About</a><a href="#who">Who it is for</a><a href="#how">How it works</a><a href="updates.html">Updates</a><a href="papers.html">Policy papers</a><a href="#register">Register</a></nav>
 </header>
 <main>
 <section class="hero band" aria-labelledby="t">
@@ -220,9 +224,18 @@ footer a{color:#fff;overflow-wrap:anywhere}
 <dl class="rows">
 <div><dt>Ground rules</dt><dd>Policy and general practice only. Live competitions, individual bids and prices are not discussed.</dd></div>
 <div><dt>Chatham House Rule</dt><dd>All meetings are held under the Chatham House Rule. You may use what you hear, but you may not reveal who said it or which organisation they represent. This allows everyone to speak freely.</dd></div>
-<div><dt>Organiser</dt><dd>Capital Offset Services Limited organises each meeting. UK-NOC is independent: it is not a government body and does not speak for the Ministry of Defence.</dd></div>
+<div><dt>Independence</dt><dd>UK-NOC is independent. It is not a government body and does not speak for the Ministry of Defence.</dd></div>
 </dl>
 </div>
+</div>
+</section>
+
+<section class="band sec" id="updates" aria-labelledby="h-upd">
+<div class="wrap">
+<h2 id="h-upd">Official updates</h2>
+<p class="intro">The latest publications on UK Offset from the Ministry of Defence and other government departments, collected automatically from GOV.UK.</p>
+<div class="papers upd"><div class="paper"><div><h3><a href="https://www.gov.uk/government/publications/uk-offset-policy">UK Offset Policy</a></h3><p>Securing additional UK industrial, capability, and economic benefit from selected overseas defence and security procurements.</p></div><p class="by"><span>Ministry of Defence</span><span>Policy paper</span><span>Published 30 October 2026</span></p></div><div class="paper"><div><h3><a href="https://www.gov.uk/government/news/defence-contracts-to-prioritise-british-jobs-and-skills">Defence contracts to prioritise British jobs and skills</a></h3><p>Overseas firms winning UK defence contracts to be required to invest benefits back into the UK under new Offsets policy.</p></div><p class="by"><span>Ministry of Defence, HM Treasury</span><span>Press release</span><span>Published 30 October 2026</span></p></div><div class="paper"><div><h3><a href="https://www.gov.uk/government/speeches/minister-for-defence-readiness-and-industry-luke-pollard-mp-keynote-speech-at-dprte-2026">Minister for Defence Readiness and Industry, Luke Pollard MP, Keynote Speech at DPRTE 2026</a></h3><p>The Minister for Defence Readiness and Industry, Luke Pollard MP, opened the two-day DPRTE 2026 conference with a keynote speech addressing topics such as procurement, innovation and skills.</p></div><p class="by"><span>Ministry of Defence</span><span>Speech</span><span>Published 25 March 2026</span></p></div></div>
+<p class="checked"><a href="updates.html">All official updates</a>. Last checked 25 November 2026.</p>
 </div>
 </section>
 
@@ -272,7 +285,7 @@ footer a{color:#fff;overflow-wrap:anywhere}
 <footer class="band">
 <div class="wrap">
 <div><p class="name">UK National Offset Council</p><p>An informal, independent forum. It is not a government body and does not speak for the Ministry of Defence.</p></div>
-<div><p>Organised by Capital Offset Services Limited, registered in England and Wales, company number 08803140.</p><p>Contact: <a href="mailto:stephen.lewis@nationaloffsetcouncil.uk">stephen.lewis@nationaloffsetcouncil.uk</a></p></div>
+<div><p>Contact: <a href="mailto:stephen.lewis@nationaloffsetcouncil.uk">stephen.lewis@nationaloffsetcouncil.uk</a></p><p><a href="index.html#privacy">How we use your details</a></p></div>
 </div>
 </footer>
 <script>

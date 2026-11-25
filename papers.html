@@ -102,6 +102,10 @@ svg[data-hl=gov] .gov,svg[data-hl=uk] .uk,svg[data-hl=ovs] .ovs{opacity:1}
 .paper p{margin:0;color:var(--muted)}
 .paper .by{font-size:14px;color:var(--muted);white-space:nowrap;padding-top:4px}
 .paper .also{margin-top:6px;font-size:15px;color:var(--ink)}
+.upd .by{white-space:normal}
+@media(min-width:601px){.upd .paper{grid-template-columns:minmax(0,1fr) 16.5em}}
+.upd .by span{display:block}
+.checked{font-size:15px;color:var(--muted);margin:16px 0 0}
 .reg,.band.tint{background:var(--panel)}
 .reg .split{align-items:start}
 form,.regcard{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:clamp(18px,3vw,32px);display:grid;gap:18px}
@@ -134,7 +138,7 @@ footer a{color:#fff;overflow-wrap:anywhere}
 <body id="top">
 <header class="top">
 <a class="mark" href="index.html" aria-label="UK-NOC home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="2.8" r="2.6" fill="var(--gov)"/><circle cx="25.6" cy="21.1" r="2.6" fill="var(--uk)"/><circle cx="4.4" cy="21.1" r="2.6" fill="var(--ovs)"/></svg>UK-NOC</a>
-<nav aria-label="Sections"><a href="index.html#about">About</a><a href="index.html#who">Who it is for</a><a href="index.html#how">How it works</a><a href="papers.html" aria-current="page">Policy papers</a><a href="index.html#register">Register</a></nav>
+<nav aria-label="Sections"><a href="index.html#about">About</a><a href="index.html#who">Who it is for</a><a href="index.html#how">How it works</a><a href="updates.html">Updates</a><a href="papers.html" aria-current="page">Policy papers</a><a href="index.html#register">Register</a></nav>
 </header>
 <main>
 <section class="pagehead band" aria-labelledby="t">
@@ -154,7 +158,7 @@ footer a{color:#fff;overflow-wrap:anywhere}
 <footer class="band">
 <div class="wrap">
 <div><p class="name">UK National Offset Council</p><p>An informal, independent forum. It is not a government body and does not speak for the Ministry of Defence.</p></div>
-<div><p>Organised by Capital Offset Services Limited, registered in England and Wales, company number 08803140.</p><p>Contact: <a href="mailto:stephen.lewis@nationaloffsetcouncil.uk">stephen.lewis@nationaloffsetcouncil.uk</a></p></div>
+<div><p>Contact: <a href="mailto:stephen.lewis@nationaloffsetcouncil.uk">stephen.lewis@nationaloffsetcouncil.uk</a></p><p><a href="index.html#privacy">How we use your details</a></p></div>
 </div>
 </footer>
 </body>

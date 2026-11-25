@@ -1,0 +1,50 @@
+name: Official updates from GOV.UK
+
+# Every three hours this reads GOV.UK's public search for publications on UK
+# Offset (tools/gov_updates.py), saves them in data/gov_updates.json, rebuilds
+# the pages (tools/build_noc.py) and publishes them on the live site. It never
+# deletes an update and never changes anything except data/gov_updates.json,
+# index.html and updates.html. Nothing to set up: GOV.UK needs no key.
+
+on:
+  schedule:
+    # Every three hours. GitHub sometimes skips a scheduled run; the next run
+    # catches up. Each day's first run also records the date it checked, which
+    # keeps this repository active so GitHub keeps the schedule switched on.
+    - cron: "41 */3 * * *"
+  workflow_dispatch:         # adds a "Run workflow" button for a manual run
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gov-updates
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect official updates from GOV.UK
+        run: python3 tools/gov_updates.py
+
+      - name: Rebuild the pages
+        run: python3 tools/build_noc.py
+
+      - name: Check only the update files changed
+        run: |
+          git status --porcelain
+          BAD=$(git status --porcelain | awk '{print $2}' | grep -vxE 'data/gov_updates.json|index.html|updates.html' || true)
+          if [ -n "$BAD" ]; then echo "Stopping: unexpected files changed: $BAD"; exit 1; fi
+
+      - name: Publish
+        run: |
+          if git diff --quiet; then echo "Nothing changed."; exit 0; fi
+          git config user.name "UK-NOC updates"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/gov_updates.json index.html updates.html
+          git commit -m "Official updates from GOV.UK (checked $(python3 -c "import json;print(json.load(open('data/gov_updates.json'))['checked'])"))"
+          git pull --rebase origin main
+          git push origin HEAD:main
