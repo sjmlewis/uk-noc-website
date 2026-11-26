@@ -381,6 +381,93 @@ def newsbox():
 
 NEWSBOX = newsbox()
 
+# ------------------------------------------------ live check with GOV.UK (26 Nov 2026, Stephen's option 3)
+# Each time someone opens the home page or the Updates page, their browser asks GOV.UK's public search
+# for new Ministry of Defence publications on Offset, using the same two searches, the same phrase test
+# and the same layout as tools/gov_updates.py and this file. Anything new shows at once; the GitHub
+# job saves it for good when it next runs. If GOV.UK cannot be reached, or the browser is too old,
+# the page simply shows the saved list. The rules are read from tools/gov_updates.py, so they never drift.
+LIVE_JS = r"""
+(()=>{
+const cfg=@@LIVE@@;
+const box=document.querySelector('.papers.upd'),nb=document.querySelector('ul.nb'),when=document.getElementById('upd-when');
+if((!box&&!nb)||!window.fetch||!window.Intl||!window.Promise)return;
+let REL;try{REL=new RegExp(cfg.rel,'i');}catch(e){return;}
+const API='https://www.gov.uk/api',M=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const fmt=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit'});
+const day=ts=>{const p={};for(const x of fmt.formatToParts(new Date(ts)))p[x.type]=x.value;return p.year+'-'+p.month+'-'+p.day;};
+const stamp=ts=>new Date(ts).toISOString().replace(/\.\d+Z$/,'Z');
+const longDate=iso=>{const [y,m,d]=iso.split('-');return (+d)+' '+M[m-1]+' '+y;};
+const shortDate=iso=>{const [y,m,d]=iso.split('-');return (+d)+' '+M[m-1].slice(0,3)+' '+y;};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;'}[c]));
+const ta=document.createElement('textarea');
+const plain=s=>{ta.innerHTML=String(s||'').replace(/<[^>]+>/g,' ');return ta.value.replace(/\s+/g,' ').trim();};
+const asText=v=>{if(typeof v==='string')return v;if(Array.isArray(v)){for(const p of v)if(p&&typeof p==='object'&&p.content_type==='text/html')return p.content||'';return v.filter(p=>p&&typeof p==='object').map(p=>p.content||'').join(' ');}return '';};
+const contentText=c=>{const d=c.details||{},parts=[c.title||'',c.description||''];for(const k of ['body','summary','introduction'])parts.push(asText(d[k]));
+  for(const x of d.documents||[])if(typeof x==='string')parts.push(x);for(const a of d.attachments||[])if(a&&typeof a==='object')parts.push(a.title||'');return plain(parts.join(' '));};
+const getJSON=async url=>{const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),15000);
+  try{const r=await fetch(url,{signal:ctl.signal,credentials:'omit'});if(r.status===404||r.status===410)return null;if(!r.ok)throw new Error('HTTP '+r.status);return await r.json();}finally{clearTimeout(t);}};
+const makeItem=(path,hit,c)=>{const d=c.details||{},published=day(c.first_published_at||c.public_updated_at),updated=day(c.public_updated_at),dt=c.document_type||'';let note='';
+  if(updated!==published)for(const ch of d.change_history||[])if(ch&&ch.note&&stamp(ch.public_timestamp||'1970-01-01T00:00:00Z')===stamp(c.public_updated_at)){note=plain(ch.note);break;}
+  return {link:'https://www.gov.uk'+path,title:plain(c.title),summary:plain(c.description),
+    type:plain(hit.display_type||d.document_type_label||cfg.labels[dt]||dt.replace(/_/g,' ').replace(/^./,x=>x.toUpperCase())),
+    orgs:(((c.links||{}).organisations)||[]).map(o=>plain(o&&o.title)).slice(0,3),published,updated,note,stamp:stamp(c.public_updated_at)};};
+const updRow=it=>{const by=[it.orgs.join(', '),it.type,'Published '+longDate(it.published)];if(it.updated!==it.published)by.push('Updated '+longDate(it.updated));
+  return '<div class="paper"><div><h3><a href="'+esc(it.link)+'">'+esc(it.title)+'</a></h3><p>'+esc(it.summary)+'</p>'+(it.note?'<p class="also">'+esc(it.note)+'</p>':'')+'</div>'
+    +'<p class="by">'+by.filter(Boolean).map(b=>'<span>'+esc(b)+'</span>').join('')+'</p></div>';};
+const nbRow=it=>'<li class="uk"><p class="nb-meta"><span class="ukpill">UK</span>'+esc([it.orgs.join(', '),it.type,shortDate(it.updated)].filter(Boolean).join(' · '))+'</p><a href="'+esc(it.link)+'">'+esc(it.title)+'</a></li>';
+const gov=a=>/^https:\/\/www\.gov\.uk\//.test(a.getAttribute('href')||'');
+const show=items=>{items.sort((a,b)=>a.stamp<b.stamp?-1:1);
+  for(const it of items){
+    if(box){for(const a of box.querySelectorAll('.paper h3 a'))if(a.getAttribute('href')===it.link)a.closest('.paper').remove();
+      const none=box.querySelector('p.intro');if(none)none.remove();box.insertAdjacentHTML('afterbegin',updRow(it));}
+    if(nb){for(const a of nb.querySelectorAll('li a'))if(a.getAttribute('href')===it.link)a.closest('li').remove();
+      nb.insertAdjacentHTML('afterbegin',nbRow(it));
+      const off=[...nb.querySelectorAll('li.uk')].filter(li=>{const a=li.querySelector('a');return a&&gov(a);});for(const li of off.slice(2))li.remove();
+      for(const li of [...nb.querySelectorAll('li.uk')].slice(3))li.remove();}}};
+(async()=>{
+  const hits=new Map();
+  for(let n=0;n<cfg.searches.length;n++){
+    let res=null;try{const d=await getJSON(API+'/search.json?'+new URLSearchParams(Object.assign({},cfg.searches[n],{fields:cfg.fields})));res=d&&Array.isArray(d.results)?d.results:null;}catch(e){}
+    if(!res){if(n===0)return;continue;}
+    for(const r of res){const link=r.link||'';if(link.startsWith('/')&&r.public_timestamp&&!hits.has(link))hits.set(link,r);}}
+  const fresh=[];let budget=12;
+  for(const [path,hit] of hits){
+    const ts=stamp(hit.public_timestamp);
+    if(day(ts)<cfg.since||cfg.known[path]===ts||cfg.seen[path]===ts)continue;
+    if(budget--<=0)break;
+    let c=null;try{c=await getJSON(API+'/content'+encodeURI(path));}catch(e){continue;}
+    if(!c||(c.locale||'en')!=='en'||!c.public_updated_at)continue;
+    if(c.withdrawn_notice&&Object.keys(c.withdrawn_notice).length)continue;
+    if(!REL.test(contentText(c)))continue;
+    fresh.push(makeItem(path,hit,c));}
+  if(fresh.length)show(fresh);
+  if(when)when.textContent='Last checked just now.';
+})().catch(()=>{});
+})();
+"""
+
+
+def live_js():
+    """LIVE_JS with the GOV.UK rules from tools/gov_updates.py and the saved list built in. Empty if they can't be read."""
+    try:
+        import importlib.util
+        import sys
+        sys.dont_write_bytecode = True  # no tools/__pycache__ folder: the GitHub job allows only the page and data files to change
+        spec = importlib.util.spec_from_file_location("gov_updates", Path(__file__).resolve().parent / "gov_updates.py")
+        gu = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(gu)
+        cfg = {"since": gu.SINCE, "searches": gu.SEARCHES, "fields": gu.FIELDS, "rel": gu.RELEVANT.pattern,
+               "labels": gu.TYPE_LABELS, "known": {it["path"]: it["stamp"] for it in UPD.get("items", [])},
+               "seen": UPD.get("seen", {})}
+    except Exception as e:  # the pages still work without the live check
+        print(f"Warning: live GOV.UK check left out ({e})")
+        return ""
+    return LIVE_JS.replace("@@LIVE@@", json.dumps(cfg, sort_keys=True, separators=(",", ":")).replace("</", "<\\/"))
+
+
+LIVE = live_js()
+
 
 def page(name, title, desc, body, script=""):
     html = HEAD.replace("@@TITLE@@", title).replace("@@DESC@@", desc).replace("@@CSS@@", CSS)
@@ -753,7 +840,7 @@ UPDATES_BODY = f"""
 <section class="band" aria-label="Updates">
 <div class="wrap">
 <div class="papers upd">{update_rows(UPD.get("items", []))}</div>
-<div class="callout"><p>{CHECKED} Titles and summaries are GOV.UK's own, and GOV.UK holds the current version of each document.</p>{OGL_LINE}</div>
+<div class="callout"><p><span id="upd-when">{CHECKED}</span> Titles and summaries are GOV.UK's own, and GOV.UK holds the current version of each document.</p>{OGL_LINE}</div>
 </div>
 </section>
 """
@@ -778,7 +865,7 @@ NEWS_BODY = f"""
 if __name__ == "__main__":
     page("index.html", "UK National Offset Council",
          "An informal forum in central London for government, UK companies and overseas suppliers working with the UK Offset Policy.",
-         HOME, HOME_JS)
+         HOME, HOME_JS + LIVE)
     (OUT / "CNAME").write_text("nationaloffsetcouncil.uk\n", encoding="utf-8")
     (OUT / "robots.txt").write_text("User-agent: *\nAllow: /\nSitemap: https://nationaloffsetcouncil.uk/sitemap.xml\n", encoding="utf-8")
     (OUT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -792,7 +879,7 @@ if __name__ == "__main__":
          "Official documents on UK Offset, defence and industry, and the land, sea, air and space strategies.", PAPERS_BODY)
     page("updates.html", "Official updates | UK-NOC",
          "Publications on UK Offset from the Ministry of Defence, updated automatically from GOV.UK.",
-         UPDATES_BODY)
+         UPDATES_BODY, LIVE)
     page("news.html", "Offset news | UK-NOC",
          "A weekly round-up of new defence sales around the world above countries' Offset thresholds, and changes to the rules.",
          NEWS_BODY)

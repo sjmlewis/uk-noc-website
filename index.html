@@ -337,6 +337,64 @@ c.addEventListener('mouseleave',()=>{if(!held)show(null)});
 c.addEventListener('click',()=>{held=held===c.dataset.g?null:c.dataset.g;show(held||null)});
 }
 }
+
+(()=>{
+const cfg={"fields":"title,link,description,public_timestamp,display_type","known":{"/government/consultations/defence-industrial-strategy-dis-offset-written-consultation":"2025-10-23T09:00:12Z","/government/news/defence-contracts-to-prioritise-british-jobs-and-skills":"2026-10-30T00:01:00Z","/government/news/government-launches-back-british-industry-call-to-action-to-boost-uk-jobs-businesses-and-skills":"2025-10-22T23:00:00Z","/government/publications/uk-offset-policy":"2026-10-30T00:01:00Z","/government/speeches/defence-secretary-defence-investment-summit-speech":"2025-09-09T23:00:00Z","/government/speeches/defence-secretarys-dsei-2025-keynote-speech":"2025-09-10T23:00:00Z","/government/speeches/minister-for-defence-procurement-and-industry-luke-pollard-statement-on-defence-industrial-strategy":"2025-09-09T11:39:32Z","/government/speeches/minister-for-defence-readiness-and-industry-luke-pollard-mp-keynote-speech-at-dprte-2026":"2026-03-25T14:58:00Z"},"labels":{"authored_article":"Article","closed_consultation":"Consultation","consultation_outcome":"Consultation outcome","corporate_report":"Corporate report","correspondence":"Correspondence","detailed_guide":"Guidance","form":"Form","guidance":"Guidance","independent_report":"Independent report","national_statistics":"Accredited official statistics","news_story":"News story","notice":"Notice","official_statistics":"Official statistics","open_consultation":"Open consultation","oral_statement":"Oral statement to Parliament","policy":"Policy","policy_paper":"Policy paper","press_release":"Press release","research":"Research","speech":"Speech","statutory_guidance":"Statutory guidance","transparency":"Transparency data","written_statement":"Written statement to Parliament"},"rel":"(?<!carbon )(?<!carbon-)\\b(?:offset (?:policy|authority|agreements?|obligations?|commitments?|requirements?|consultation|regime|arrangements?|programmes?|credits?|activit(?:y|ies)|proposals?|multipliers?|guidance|thresholds?|projects?|plans?|value)|offsets? policy|(?:uk|defence|british|national) offsets?\\b|industrial participation)","searches":[{"count":"50","filter_organisations":"ministry-of-defence","order":"-public_timestamp","q":"offset"},{"count":"50","filter_content_purpose_supergroup":"news_and_communications","filter_part_of_taxonomy_tree":"e491505c-77ae-45b2-84be-8c94b94f6a2b","order":"-public_timestamp","q":"offset"}],"seen":{"/government/news/army-solar-farm-powers-greener-future-at-larkhill-garrison":"2026-07-20T13:17:10Z","/government/news/new-targets-installed-at-holbeach-to-enhance-defence-training":"2026-05-12T11:09:14Z","/government/publications/ministry-of-defence-form-680-procedure-guidance":"2025-07-07T08:10:01Z","/government/publications/mod-small-and-medium-sized-enterprise-sme-action-plan":"2026-07-21T09:40:00Z","/government/publications/nuclear-regulatory-taskforce":"2025-11-24T00:01:03Z","/government/publications/the-european-union-defence-and-security-public-contracts-regulations-dspcr-2011":"2025-02-27T12:20:43Z","/government/statistics/mod-common-law-compensation-claims-statistics-202425":"2026-08-27T08:30:06Z","/government/statistics/mod-trade-industry-and-contracts-2025":"2026-03-12T09:30:04Z","/government/statistics/uk-defence-export-statistics-2024":"2026-03-05T09:30:00Z"},"since":"2025-01-01"};
+const box=document.querySelector('.papers.upd'),nb=document.querySelector('ul.nb'),when=document.getElementById('upd-when');
+if((!box&&!nb)||!window.fetch||!window.Intl||!window.Promise)return;
+let REL;try{REL=new RegExp(cfg.rel,'i');}catch(e){return;}
+const API='https://www.gov.uk/api',M=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const fmt=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit'});
+const day=ts=>{const p={};for(const x of fmt.formatToParts(new Date(ts)))p[x.type]=x.value;return p.year+'-'+p.month+'-'+p.day;};
+const stamp=ts=>new Date(ts).toISOString().replace(/\.\d+Z$/,'Z');
+const longDate=iso=>{const [y,m,d]=iso.split('-');return (+d)+' '+M[m-1]+' '+y;};
+const shortDate=iso=>{const [y,m,d]=iso.split('-');return (+d)+' '+M[m-1].slice(0,3)+' '+y;};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;'}[c]));
+const ta=document.createElement('textarea');
+const plain=s=>{ta.innerHTML=String(s||'').replace(/<[^>]+>/g,' ');return ta.value.replace(/\s+/g,' ').trim();};
+const asText=v=>{if(typeof v==='string')return v;if(Array.isArray(v)){for(const p of v)if(p&&typeof p==='object'&&p.content_type==='text/html')return p.content||'';return v.filter(p=>p&&typeof p==='object').map(p=>p.content||'').join(' ');}return '';};
+const contentText=c=>{const d=c.details||{},parts=[c.title||'',c.description||''];for(const k of ['body','summary','introduction'])parts.push(asText(d[k]));
+  for(const x of d.documents||[])if(typeof x==='string')parts.push(x);for(const a of d.attachments||[])if(a&&typeof a==='object')parts.push(a.title||'');return plain(parts.join(' '));};
+const getJSON=async url=>{const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),15000);
+  try{const r=await fetch(url,{signal:ctl.signal,credentials:'omit'});if(r.status===404||r.status===410)return null;if(!r.ok)throw new Error('HTTP '+r.status);return await r.json();}finally{clearTimeout(t);}};
+const makeItem=(path,hit,c)=>{const d=c.details||{},published=day(c.first_published_at||c.public_updated_at),updated=day(c.public_updated_at),dt=c.document_type||'';let note='';
+  if(updated!==published)for(const ch of d.change_history||[])if(ch&&ch.note&&stamp(ch.public_timestamp||'1970-01-01T00:00:00Z')===stamp(c.public_updated_at)){note=plain(ch.note);break;}
+  return {link:'https://www.gov.uk'+path,title:plain(c.title),summary:plain(c.description),
+    type:plain(hit.display_type||d.document_type_label||cfg.labels[dt]||dt.replace(/_/g,' ').replace(/^./,x=>x.toUpperCase())),
+    orgs:(((c.links||{}).organisations)||[]).map(o=>plain(o&&o.title)).slice(0,3),published,updated,note,stamp:stamp(c.public_updated_at)};};
+const updRow=it=>{const by=[it.orgs.join(', '),it.type,'Published '+longDate(it.published)];if(it.updated!==it.published)by.push('Updated '+longDate(it.updated));
+  return '<div class="paper"><div><h3><a href="'+esc(it.link)+'">'+esc(it.title)+'</a></h3><p>'+esc(it.summary)+'</p>'+(it.note?'<p class="also">'+esc(it.note)+'</p>':'')+'</div>'
+    +'<p class="by">'+by.filter(Boolean).map(b=>'<span>'+esc(b)+'</span>').join('')+'</p></div>';};
+const nbRow=it=>'<li class="uk"><p class="nb-meta"><span class="ukpill">UK</span>'+esc([it.orgs.join(', '),it.type,shortDate(it.updated)].filter(Boolean).join(' · '))+'</p><a href="'+esc(it.link)+'">'+esc(it.title)+'</a></li>';
+const gov=a=>/^https:\/\/www\.gov\.uk\//.test(a.getAttribute('href')||'');
+const show=items=>{items.sort((a,b)=>a.stamp<b.stamp?-1:1);
+  for(const it of items){
+    if(box){for(const a of box.querySelectorAll('.paper h3 a'))if(a.getAttribute('href')===it.link)a.closest('.paper').remove();
+      const none=box.querySelector('p.intro');if(none)none.remove();box.insertAdjacentHTML('afterbegin',updRow(it));}
+    if(nb){for(const a of nb.querySelectorAll('li a'))if(a.getAttribute('href')===it.link)a.closest('li').remove();
+      nb.insertAdjacentHTML('afterbegin',nbRow(it));
+      const off=[...nb.querySelectorAll('li.uk')].filter(li=>{const a=li.querySelector('a');return a&&gov(a);});for(const li of off.slice(2))li.remove();
+      for(const li of [...nb.querySelectorAll('li.uk')].slice(3))li.remove();}}};
+(async()=>{
+  const hits=new Map();
+  for(let n=0;n<cfg.searches.length;n++){
+    let res=null;try{const d=await getJSON(API+'/search.json?'+new URLSearchParams(Object.assign({},cfg.searches[n],{fields:cfg.fields})));res=d&&Array.isArray(d.results)?d.results:null;}catch(e){}
+    if(!res){if(n===0)return;continue;}
+    for(const r of res){const link=r.link||'';if(link.startsWith('/')&&r.public_timestamp&&!hits.has(link))hits.set(link,r);}}
+  const fresh=[];let budget=12;
+  for(const [path,hit] of hits){
+    const ts=stamp(hit.public_timestamp);
+    if(day(ts)<cfg.since||cfg.known[path]===ts||cfg.seen[path]===ts)continue;
+    if(budget--<=0)break;
+    let c=null;try{c=await getJSON(API+'/content'+encodeURI(path));}catch(e){continue;}
+    if(!c||(c.locale||'en')!=='en'||!c.public_updated_at)continue;
+    if(c.withdrawn_notice&&Object.keys(c.withdrawn_notice).length)continue;
+    if(!REL.test(contentText(c)))continue;
+    fresh.push(makeItem(path,hit,c));}
+  if(fresh.length)show(fresh);
+  if(when)when.textContent='Last checked just now.';
+})().catch(()=>{});
+})();
 </script>
 </body>
 </html>
