@@ -163,6 +163,7 @@ footer .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:
 footer p{margin:0 0 6px;color:#d6e7ea}
 footer .name{font:600 22px/1.2 Newsreader,Georgia,serif;color:#fff;margin-bottom:8px}
 footer a{color:#fff;overflow-wrap:anywhere}
+a[href^="mailto:"]{overflow-wrap:anywhere}
 @media(max-width:900px){.three{grid-template-columns:minmax(0,1fr)}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}.facts div:nth-child(3){border-left:0}.facts div:nth-child(n+3){border-top:1px solid var(--rule)}}
 @media(max-width:640px){.split,.two,footer .wrap{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){.hero .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"txt" "fig" "act";row-gap:18px}.plan{max-width:340px}.lede,.pagehead p{font-size:17px}.facts{grid-template-columns:minmax(0,1fr)}.facts div{border-left:0}.facts div+div{border-top:1px solid var(--rule)}.rows div,.ruled div,.ruled.short div,.paper{grid-template-columns:minmax(0,1fr)}.paper .by{white-space:normal;padding-top:0}}
