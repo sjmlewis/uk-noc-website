@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Build the UK National Offset Council (UK-NOC) website.
 
-Writes five pages next to this file:
-  index.html, uk-offset-policy.html, offset-green-book.html, papers.html, updates.html
+Writes six pages next to this file:
+  index.html, uk-offset-policy.html, offset-green-book.html, papers.html, updates.html, news.html
+The emblem comes from assets/uknoc-mark.svg and assets/uknoc-seal.svg (drawn by tools/make_emblem.py).
 Edit this file, never the HTML, then run:  python3 build_noc.py
 The official updates come from data/gov_updates.json, which tools/gov_updates.py
 refreshes from GOV.UK (the GitHub Action "Official updates from GOV.UK" runs both).
@@ -63,23 +64,27 @@ dd{margin:0}
 .hero h1::before,.pagehead h1::before,.sec h2::before,.who h2::before,.reg h2::before,.tint h2::before{content:"";display:block;width:84px;height:5px;margin-bottom:18px;border-radius:1px;
   background:linear-gradient(90deg,var(--gov) 0 26px,transparent 26px 29px,var(--uk) 29px 55px,transparent 55px 58px,var(--ovs) 58px 84px)}
 .hero h1::before,.pagehead h1::before{margin-bottom:22px}
+.hero .ttl h1::before{content:none}  /* on the home page the seal carries the seat colours */
 .top,.hero,.pagehead{background:var(--field);color:#f1f7f8}
 .top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 32px;padding:14px max(5vw,16px);border-bottom:1px solid rgba(255,255,255,.14)}
-.mark{display:inline-flex;align-items:center;gap:12px;text-decoration:none;padding:6px 0;color:#fff}
-.mark svg{width:42px;height:42px;flex:none}
-.mk{display:flex;flex-direction:column;gap:4px}
-.mk1{font:700 27px/1 Newsreader,Georgia,serif;letter-spacing:.005em}
-.mk2{font:600 13px/1.2 Inter,system-ui,sans-serif;color:#cfe3e7}
+.mark{display:inline-flex;align-items:center;gap:14px;text-decoration:none;padding:6px 0;color:#fff}
+.mark svg{width:64px;height:64px;flex:none}
+.mk{display:flex;flex-direction:column;gap:6px}
+.mk1{font:700 36px/1 Newsreader,Georgia,serif;letter-spacing:.005em}
+.mk2{font:600 15px/1.2 Inter,system-ui,sans-serif;color:#cfe3e7}
 nav{display:flex;flex-wrap:wrap;align-items:center;gap:2px 24px;font:600 16px/1.2 Inter,system-ui,sans-serif}
 nav a{display:inline-block;padding:12px 0;text-decoration:none;color:#fff;border-bottom:2px solid transparent}
 nav a:hover,nav a[aria-current=page]{border-bottom-color:var(--ovs)}
 nav a.navreg{padding:11px 18px;border:0;border-radius:6px;background:var(--ovs);color:#1d1600}
 nav a.navreg:hover{filter:brightness(1.07)}
 .hero{padding-top:clamp(24px,4vw,52px)}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);grid-template-areas:"txt fig" "act fig";column-gap:clamp(28px,5vw,80px);align-items:center}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);grid-template-areas:"ttl ttl" "txt fig" "act fig";grid-template-rows:auto auto 1fr;column-gap:clamp(28px,5vw,80px);align-items:center}
 .txt{grid-area:txt;align-self:end}
 .act{grid-area:act;align-self:start}
 .fig{grid-area:fig}
+.ttl{grid-area:ttl;display:flex;align-items:center;gap:clamp(18px,2.4vw,32px);margin-bottom:clamp(14px,2vw,28px)}
+.ttl .seal{width:clamp(84px,9.2vw,132px);height:auto;flex:none}
+.ttl h1{margin:0}
 .lede,.pagehead p{font-size:19px;line-height:1.6;color:#d9eaed;max-width:40em}
 .when{font-weight:600;color:#fff;margin:6px 0 26px;padding-left:14px;border-left:4px solid var(--ovs)}
 .pagehead{padding-bottom:clamp(40px,5vw,72px)}
@@ -209,9 +214,9 @@ footer .name{font:700 26px/1.2 Newsreader,Georgia,serif;color:#fff;margin-bottom
 footer a{color:#fff;overflow-wrap:anywhere}
 a[href^="mailto:"]{overflow-wrap:anywhere}
 @media(max-width:900px){.three{grid-template-columns:minmax(0,1fr)}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}.facts div:nth-child(3){border-left:0}.facts div:nth-child(n+3){border-top:1px solid var(--rule)}}
-@media(max-width:700px){.top{padding:10px max(5vw,16px)}.mark svg{width:36px;height:36px}.mk1{font-size:23px}.mk2{font-size:12px}nav{gap:0 18px;font-size:15px}nav a.navreg{padding:9px 14px}}
+@media(max-width:700px){.top{padding:10px max(5vw,16px)}.mark svg{width:48px;height:48px}.mk1{font-size:28px}.mk2{font-size:13px}nav{gap:0 18px;font-size:15px}nav a.navreg{padding:9px 14px}}
 @media(max-width:640px){.split,.two,footer .wrap{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:600px){.hero .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"txt" "fig" "act";row-gap:18px}.plan{max-width:340px}.lede,.pagehead p{font-size:17px}.facts{grid-template-columns:minmax(0,1fr)}.facts div{border-left:0}.facts div+div{border-top:1px solid var(--rule)}.rows div,.ruled div,.ruled.short div,.paper{grid-template-columns:minmax(0,1fr)}.paper .by{white-space:normal;padding-top:0}}
+@media(max-width:600px){.hero .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"ttl" "txt" "fig" "act";grid-template-rows:none;row-gap:18px}.ttl{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:0}.ttl .seal{width:96px}.plan{max-width:340px}.lede,.pagehead p{font-size:17px}.facts{grid-template-columns:minmax(0,1fr)}.facts div{border-left:0}.facts div+div{border-top:1px solid var(--rule)}.rows div,.ruled div,.ruled.short div,.paper{grid-template-columns:minmax(0,1fr)}.paper .by{white-space:normal;padding-top:0}}
 @media(prefers-reduced-motion:reduce){.seat{transition:none}html{scroll-behavior:auto}}"""
 
 HEAD = """<!DOCTYPE html>
@@ -221,6 +226,9 @@ HEAD = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>@@TITLE@@</title>
 <meta name="description" content="@@DESC@@">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Newsreader:opsz,wght@6..72,600;6..72,700&display=swap">
@@ -231,9 +239,17 @@ HEAD = """<!DOCTYPE html>
 <body id="top">
 """
 
-MARK = ('<svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="8" fill="none" stroke="currentColor" stroke-width="2"/>'
-        '<circle cx="15" cy="2.8" r="2.6" fill="var(--gov)"/><circle cx="25.6" cy="21.1" r="2.6" fill="var(--uk)"/>'
-        '<circle cx="4.4" cy="21.1" r="2.6" fill="var(--ovs)"/></svg>')
+def emblem(name, cls):
+    """The emblem drawings in assets/ (made by tools/make_emblem.py), ready to sit inside a page.
+    They are decoration next to text that says the same, so screen readers skip them."""
+    svg = (OUT / "assets" / name).read_text(encoding="utf-8").strip()
+    svg = svg.replace(' xmlns="http://www.w3.org/2000/svg"', "", 1)
+    svg = svg[:svg.index(" role=")] + svg[svg.index(">"):] if " role=" in svg[:svg.index(">")] else svg
+    return svg.replace("<svg ", f'<svg class="{cls}" aria-hidden="true" focusable="false" ', 1)
+
+
+MARK = emblem("uknoc-mark.svg", "mk0")  # the seal's middle: three seats round one table
+SEAL = emblem("uknoc-seal.svg", "seal")  # the Council seal, beside the title on the home page
 
 NAV = [("About", "#about"), ("Who it is for", "#who"), ("How it works", "#how"),
        ("Updates", "updates.html"), ("News", "news.html"), ("Policy papers", "papers.html"), ("Register", "#register")]
@@ -529,8 +545,8 @@ TABLE_SVG = (
 HOME = f"""
 <section class="hero band" aria-labelledby="t">
 <div class="wrap">
+<div class="ttl">{SEAL}<h1 id="t">UK National Offset Council</h1></div>
 <div class="txt">
-<h1 id="t">UK National Offset Council</h1>
 <p class="lede">An informal gathering in central London for people with an interest in UK Offset and the UK Offset Policy: officials from the Ministry of Defence and other government departments, UK companies and overseas suppliers. Each meeting is half a day, free to attend, and brings industry and government together on how Offset works in practice.</p>
 <p class="when">Meetings are held quarterly whenever possible.</p>
 </div>
